@@ -12,6 +12,8 @@
 
 	/** Rubric builder initialisation **/
 	function rubricbuilder_init() {
+		
+		
 		global $CONFIG;
 		include_once('lib/rubric.php');
 

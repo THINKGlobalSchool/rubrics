@@ -49,7 +49,7 @@
 	set_context($context);
 	
 	// layout the sidebar and main column using the default sidebar
-	$body = elgg_view_layout('two_column_left_sidebar', '', $content);
+	$body = elgg_view_layout('one_column_with_sidebar', $content, '');
 
 	// create the complete html page and send to browser
 	page_draw($title, $body);
