@@ -139,19 +139,16 @@
 		for ($i = 0; $i < $num_rows; $i++) {
 			$rubric_input .= "<tr id='row" . $i . "'>";
 			for ($j = 0; $j < $num_cols; $j++) {
-			
-				$input_class = 'rubric_input';
 					
 				// Zebra stripes
-				if ($i % 2 == 0)
-					$input_class .= " alt";
-					
-				
+				if ($i % 2 == 0 && $i != 0)
+					$input_class = "alt";
 				
 				if ($i == 0) {
-					$rubric_input .= "<td style='height: 17px; font-size: 120%;'>";
+					$rubric_input .= "<td style='height: 17px;'>";
 					$rubric_input .= elgg_view('input/text', array('internalname' => $i . '|' . $j, 'value' => elgg_echo($contents[$i][$j]), 'class' => $input_class . " rubric_header"));
 				} else {
+					$input_class .= ' rubric_input';
 					$rubric_input .= "<td>";
 			    	$rubric_input .=  elgg_view('input/plaintext', array('internalname' => $i . '|' . $j, 'value' => elgg_echo($contents[$i][$j]), 'class' => $input_class));
 				}
@@ -174,8 +171,8 @@
 
 	// Build form body
 	$form_body = <<<EOT
-	<div class="contentWrapper">
-		<p>
+	<div>
+		<p class='margin_top'>
 			<label>$title_label</label><br />
             $title_textbox
 		</p>

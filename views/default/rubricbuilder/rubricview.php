@@ -87,7 +87,7 @@
 			}
 			
 			// Build rubric table
-			$rubric_table = "<table class='rubric_table'>";
+			$rubric_table = "<table class='rubric_table' cellpadding='10px' cellspacing='10px'>";
 			for ($i = 0; $i < $num_rows; $i++) {
 				$rubric_table .= "<tr>";
 				for ($j = 0; $j < $num_cols; $j++) {
@@ -95,7 +95,7 @@
 					$input_class = 'rubric_td';
 
 					// Zebra stripes
-					if ($i % 2 == 0)
+					if ($i % 2 == 0 && $i != 0)
 						$input_class .= " alt";
 
 					if ($i == 0) {
@@ -118,14 +118,15 @@
 			$description_output = elgg_view('output/longtext',array('value' => $description));
 			$revisions_output = elgg_view('rubricbuilder/revisionmenu', array('rev_guid' => $rev, 'rubric_guid' => $rubric->getGUID(), 'local_revisions' => $revisions_local, 'current_local_revision' => $current_revision));
 			
-			$strapline = sprintf(elgg_echo("rubricbuilder:strapline"), date("F j, Y",$vars['entity']->time_created));
-			$strapline .= " " . elgg_echo('by') . " <a href='{$vars['url']}pg/rubric/{$owner->username}'>{$owner->name}</a> ";
-			
-			if ($comments_on) {
-	        	//get the number of comments
-	    		$num_comments = elgg_count_comments($vars['entity']);
-				$strapline .= "&nbsp;&nbsp;<a href='$url'>" . sprintf(elgg_echo("comments")) . " ($num_comments)</a><br />";
-    		}
+			$date = friendly_time($rubric->time_created);
+
+			// If comments on build link
+			if ($rubric->comments_on != 'Off') {
+				$comments_count = elgg_count_comments($rubric);
+				$comments_link = "<a href=\"{$rubric->getURL()}#annotations\">" . sprintf(elgg_echo("comments"), $comments_count) . '</a>';
+			} else {
+				$comments_link = '';
+			}
 
 			// Options menu
 			$options = "";
@@ -143,50 +144,44 @@
 							));
 					
 				if ($canedit && $can_delete) {
-					if ($can_delete) {
-					$options .= "<span style='padding-left: 20px;'>" . 
-								elgg_view("output/confirmlink", array(
-									'href' => $vars['url'] . "action/rubric/delete?rubric_guid=" . $vars['entity']->getGUID(),
-									'text' => elgg_echo('delete'),
-									'confirm' => elgg_echo('deleteconfirm'),
-								)) ."</span>";
+					if ($can_delete) {								
+						$delete_url = "{$vars['url']}action/rubric/delete?rubric_guid={$rubric->getGUID()}";
+						$delete_link = "<span class='delete_button'>" . elgg_view('output/confirmlink', array(
+							'href' => $delete_url,
+							'text' => elgg_echo('delete'),
+							'confirm' => elgg_echo('deleteconfirm')
+						)) . "</span>";
+						
+						$options .= $delete_link;
 					}
-					// Allow the menu to be extended
-					$options .= elgg_view("editmenu",array('entity' => $vars['entity']));
+					// include a view for plugins to extend
+					$options = elgg_view("rubric/options", array("object_type" => 'rubric', 'entity' => $rubric)) . elgg_view_likes($rubric) . $options;
 				}
-			} 
+			}
 			
 			echo <<<EOT
-			
-			<div class="contentWrapper singleview">
-				<div class="rubric">
-					<h3><a href="$url">$title</a></h3>
-					<div class="rubric_icon">
+			<div id="rubric clearfloat">
+					<div id="content_header" class="clearfloat">
+						<div class="content_header_title"><h2>{$title}</h2></div>
+					</div>
+					<div class="entity_listing_icon">
 						$user_icon
 					</div>
-					<p class="strapline">
-						$strapline
-					</p>
-					<p class="tags">
-						$tags_output
-					</p>
-					<div class="rubric_description">
-						$description_output
+					<div class="entity_listing_info">
+						<div class="entity_metadata">$options</div>
+						<p class="entity_subtext">
+							$date
+							$comments_link
+						</p>
+						<p class="tags">$tags_output</p>
+						<span class="body"><br />$description_output<br /></span>
 					</div>
 						$revisions_output
 					<div class="clearfloat"></div>
-				</div>
-			</div>
-			<div class="contentWrapper singleview">
-				<div class="rubric">	
 					<div class="rubric_body">
 						$rubric_table
 					</div>
-					<div class="clearfloat"></div>			
-					<p class="options">
-						$options
-					</p>	
-				</div>
+					<div class="clearfloat"></div>				
 			</div>
 EOT;
 		} else {

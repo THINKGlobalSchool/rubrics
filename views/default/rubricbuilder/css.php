@@ -3,9 +3,6 @@
  * Css for rubric
  */
 ?>
-.rubric_div {
-	color: #000000;
-}
 
 .singleview {
 	margin-top:10px;
@@ -23,7 +20,7 @@
 }
 
 textarea.rubric_input, input.rubric_input {
-	width: 119px;
+	width: 127px;
 	height: 80px;
 	padding: 5px;
 	border: 1px solid #dddddd;
@@ -35,12 +32,11 @@ textarea.rubric_input, input.rubric_input {
 }
 
 td.rubric_td {
-	width: 119px;
-	height: 100;
+	height: 80px;
 	padding: 5px;
 	margin-top: 10px;
-	//border: 1px solid #eeeeee;
 	font-family: Tahoma, sans-serif;
+	border: 1px solid white;
 	border-radius: 5px;
 	-moz-border-radius:5px 5px 5px 5px;
 	-webkit-border-radius: 5px 5px 5px 5px;
@@ -54,12 +50,10 @@ input.rubric_header, td.rubric_header {
 	font-weight: bold;
 	text-align: center;
 	background: #bbdaf7;
-	border: 1px solid #bbdaf7;
-	width: 119px;
-	-moz-border-radius:5px 5px 5px 5px;
-	-webkit-border-radius: 5px 5px 5px 5px;
-	border-radius: 5px;
+	border: 1px solid white;
+	width: 127px;
 	height: 15px;
+	font: 100%;
 }
 
 td.rubric_col {
@@ -73,19 +67,12 @@ td.rubric_col_last {
 }
 
 table.rubric_table {
-	width: 98%;	
-	border-spacing: 1px;
+	width: 100%;	
 }
 
-
-table.rubric_table td {
-	height: 80px;
-}
-
-#rubric .tags {
-    padding:0 0 0 16px;
-    margin:10px 0 4px 0;
-	background:transparent url(<?php echo $vars['url']; ?>_graphics/icon_tag.gif) no-repeat scroll left 2px;
+#rubric {
+	border-bottom: 1px solid #cccccc;
+	margin-bottom: 10px;
 }
 
 #rubric .strapline {
@@ -134,12 +121,15 @@ table.rubric_table td {
 	line-height:1em;
 }
 
-.rubric p.tags {
-	background:transparent url(<?php echo $vars['url']; ?>_graphics/icon_tag.gif) no-repeat scroll left 2px;
-	margin:0 0 7px 35px;
-	padding:0pt 0pt 0pt 16px;
-	min-height:22px;
+.rubric .entity_listing_icon img {
+	width: 40px;
+	height: 40px;
 }
+
+.rubric .entity_listing_info {
+	width: 675px;
+}
+
 
 .rubric p.listingtags {
 	background:transparent url(<?php echo $vars['url']; ?>_graphics/icon_tag.gif) no-repeat scroll left 2px;

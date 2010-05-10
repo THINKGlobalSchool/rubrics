@@ -14,12 +14,6 @@
 	if ($vars['full']) {
 		echo elgg_view("rubricbuilder/rubricview",$vars);
 	} else {
-		if (get_input('search_viewtype') == "gallery") {
-			echo elgg_view('rubricbuilder/rubricgallery',$vars); 				
-		} else if (get_input('search_viewtype') == "widget") {
-			echo elgg_view("rubricbuilder/rubricwidget",$vars);
-		} else {
-			echo elgg_view("rubricbuilder/rubriclisting",$vars);
-		}
+		echo elgg_view("rubricbuilder/rubriclisting",$vars);
 	}			
 ?>

@@ -16,12 +16,14 @@
 	
 	$rubric_guid = $vars['rubric_guid'];
 
-	// Some jQuery to set the revision dropdown to the current viewing revision
 	$script = "<script type='text/javascript'>
 					$(document).ready(function() {
+						// Set dropdown to current revision
 						var current_revision = $('input#current_revision').val();
+						alert(current_revision);
 						$('#rev').val(current_revision);
 						
+						// Submit form on change event
 						$('#revselect').change(function() {
 						    this.submit();
 						});
@@ -51,7 +53,7 @@
 	if ($current_revision > 1) {
 		$prev = $flipped_revisions[$current_revision - 1];
 		$previous_button = "<form action={$CONFIG->url}pg/rubric/view/$rubric_guid/?rev=$prev'>
-								<input type='submit' style='width: 82px;' value='<< Previous' />
+								<input type='submit' style='width: 92px;' value='<< Previous' />
 								<input type='hidden' name='rev' value='$prev' />
 							</form>";
 	}  
@@ -59,7 +61,7 @@
 	if ($current_revision < $count){
 		$next = $flipped_revisions[$current_revision + 1];
 		$next_button = "<form action={$CONFIG->url}pg/rubric/view/$rubric_guid/>
-							<input type='submit' style='width: 82px;' value='Next >>' />
+							<input type='submit' style='width: 92px;' value='Next >>' />
 							<input type='hidden' name='rev' value='$next' />
 						</form>";
 	}
