@@ -138,11 +138,14 @@
 		$rubric_input = "<table class='rubric_table' id='rubric'>";
 		for ($i = 0; $i < $num_rows; $i++) {
 			$rubric_input .= "<tr id='row" . $i . "'>";
+			$input_class = '';
 			for ($j = 0; $j < $num_cols; $j++) {
 					
-				// Zebra stripes
-				if ($i % 2 == 0 && $i != 0)
+				// Zebra stripes 
+				if ($i % 2 == 0) {
 					$input_class = "alt";
+					echo $i;
+				}	
 				
 				if ($i == 0) {
 					$rubric_input .= "<td style='height: 17px;'>";
