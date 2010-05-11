@@ -76,6 +76,7 @@
 		// Other
 		'rubricbuilder:strapline' => "%s",
 		'rubricbuilder:revision' => 'Revision created %s by %s',
+		'rubricbuilder:comments:allow' => 'Allow Comments',
 	
 	);
 

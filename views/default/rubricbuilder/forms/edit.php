@@ -129,7 +129,7 @@
         $submit_input 		= elgg_view('input/submit', array('internalname' => 'submit', 'value' => elgg_echo('publish')));
 		$publish 			= elgg_echo('publish');
 		$privacy 			= elgg_echo('access');;
-		$allowcomments 		= elgg_echo('blog:comments:allow');
+		$allowcomments 		= elgg_echo('rubricbuilder:comments:allow');
 		
 		$add 	= $vars['url'] . "mod/rubricbuilder/images/plus.gif";
 		$remove = $vars['url'] . "mod/rubricbuilder/images/minus.gif";

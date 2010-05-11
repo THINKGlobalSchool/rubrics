@@ -20,9 +20,9 @@
 					$(document).ready(function() {
 						// Set dropdown to current revision
 						var current_revision = $('input#current_revision').val();
-						alert(current_revision);
-						$('#rev').val(current_revision);
-						
+
+						$('#rev').attr('value', current_revision);
+							
 						// Submit form on change event
 						$('#revselect').change(function() {
 						    this.submit();
@@ -101,7 +101,7 @@
 									<form id='revselect' action='{$CONFIG->url}pg/rubric/view/$rubric_guid/'>
 										Revision: " 
 											. elgg_view("input/pulldown", array('options_values' => $revisions_pulldown, 'internalname' => 'rev', 'internalid' => 'rev')) . "											
-											<input type='hidden' id='current_revision' value='$current_revision' />
+											<input type='hidden' id='current_revision' value='{$flipped_revisions[$current_revision]}' />
 									</form>
 							</td>
 							<td class='revision_next'>
