@@ -85,5 +85,7 @@
 	remove_metadata($_SESSION['user']->guid,'rubriccontents');
 	remove_metadata($_SESSION['user']->guid,'rubriccached');
 	
-	forward("pg/rubric/view/" . $rubric->getGUID());
+	$user = get_loggedin_user();
+	
+	forward("pg/rubric/{$user->username}/view/" . $rubric->getGUID());
 ?>

@@ -15,6 +15,9 @@
 	 */
 	
 	$rubric_guid = $vars['rubric_guid'];
+	
+	$rubric = get_entity($rubric_guid);
+	$user = get_entity($rubric->owner_guid);
 
 	$script = "<script type='text/javascript'>
 					$(document).ready(function() {
@@ -52,7 +55,7 @@
 	$next_button = "";
 	if ($current_revision > 1) {
 		$prev = $flipped_revisions[$current_revision - 1];
-		$previous_button = "<form action={$CONFIG->url}pg/rubric/view/$rubric_guid/?rev=$prev'>
+		$previous_button = "<form action={$CONFIG->url}pg/rubric/{$user->username}/view/$rubric_guid/?rev=$prev'>
 								<input type='submit' style='width: 92px;' value='<< Previous' />
 								<input type='hidden' name='rev' value='$prev' />
 							</form>";
@@ -60,7 +63,7 @@
 	
 	if ($current_revision < $count){
 		$next = $flipped_revisions[$current_revision + 1];
-		$next_button = "<form action={$CONFIG->url}pg/rubric/view/$rubric_guid/>
+		$next_button = "<form action={$CONFIG->url}pg/rubric/{$user->username}/view/$rubric_guid/>
 							<input type='submit' style='width: 92px;' value='Next >>' />
 							<input type='hidden' name='rev' value='$next' />
 						</form>";
@@ -74,7 +77,7 @@
 					));
 	}
 	
-	$history_url = $CONFIG->url . "pg/rubric/history/" . $rubric_guid;
+	$history_url = $CONFIG->url . "pg/rubric/{$user->username}/history/" . $rubric_guid;
 
 	// Get revision author
 	$revision_author = get_entity(get_annotation($flipped_revisions[$vars['current_local_revision']])->owner_guid);
@@ -98,7 +101,7 @@
 								$previous_button
 							</td>
 							<td class='revision_select'>
-									<form id='revselect' action='{$CONFIG->url}pg/rubric/view/$rubric_guid/'>
+									<form id='revselect' action='{$CONFIG->url}pg/rubric/{$user->username}/view/$rubric_guid/'>
 										Revision: " 
 											. elgg_view("input/pulldown", array('options_values' => $revisions_pulldown, 'internalname' => 'rev', 'internalid' => 'rev')) . "											
 											<input type='hidden' id='current_revision' value='{$flipped_revisions[$current_revision]}' />

@@ -13,8 +13,10 @@
 	$english = array(
 		
 		// Entity/Object Related
+		'rubric' => 'Rubrics',
 		'item:object:rubric' => 'Rubrics',
 		'rubricbuilder:title' => 'Rubric',
+		'rubricbuilder:owned_rubrics' => '%s',
 		
 		// Default Content
 		'rubricbuilder:criteria:default' => 'Criteria', 
@@ -23,7 +25,7 @@
 		'rubricbuilder:level3' => '3',
 		'rubricbuilder:level4' => '4',
 		
-		// Side Menu
+		// Menu
 		'rubricbuilder:pagetitle'	=> 'Rubrics',
 		'rubricbuilder:myrubrics' => 'Your Rubrics', 
 		'rubricbuilder:friendsrubrics' => 'Friends\' Rubrics',
@@ -51,8 +53,10 @@
 		'rubricbuilder:error' => 'There was an error saving the rubric',
 		'rubricbuilder:blank' => 'Rubric title cannot be blank', 
 		'rubricbuilder:failure'	=> 'Your action failed',
+		'rubricbuilder:error:unknown_username' => 'Unknown User',
 	
 		// Titles
+		'rubric:new' => 'Create New Rubric',
 		'rubricbuilder:create' => 'Create New Rubric',
 		'rubricbuilder:editrubric' => 'Edit Rubric',
 		'rubricbuilder:history' => "History",

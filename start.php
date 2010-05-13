@@ -30,7 +30,7 @@
 		register_entity_url_handler('rubric_url','object', 'rubric');
 
 		// Add rubrics to main menu
-		add_menu('Rubrics', $CONFIG->wwwroot . 'pg/rubric/index/');
+		add_menu('Rubrics', $CONFIG->wwwroot . 'pg/rubric/');
 
 		// Event handler for submenus
 		register_elgg_event_handler('pagesetup','system','rubricbuilder_submenus');
@@ -68,61 +68,63 @@
 	function rubricbuilder_page_handler($page) {
 		global $CONFIG;
 		
-		switch ($page[0])
-		{
+		if (isset($page[0]) && !empty($page[0])) {
+			$username = $page[0];
 
-			case 'friends':
-				include $CONFIG->pluginspath . 'rubricbuilder/pages/friends.php';
-				break;
-			case 'everyone':
-				include $CONFIG->pluginspath . 'rubricbuilder/pages/everyone.php';
-				break;
-			case 'add':
-				include $CONFIG->pluginspath . 'rubricbuilder/pages/add.php';
-				break;
-			case 'edit':
-				if ($page[1]) {
-					set_input('rubric_guid', $page[1]);
-					include $CONFIG->pluginspath . 'rubricbuilder/pages/edit.php';
-				} else { 
-					include $CONFIG->pluginspath . 'rubricbuilder/pages/index.php';
-				}
-				break;
-			case "history":
-				if (isset($page[1])) {
-					set_input('rubric_guid', $page[1]);
-					add_submenu_item(elgg_echo('rubricbuilder:label:view'), $CONFIG->url . "pg/rubric/view/{$page[1]}", 'rubriclinks');
-					include $CONFIG->pluginspath . 'rubricbuilder/pages/history.php';
-				} else {
-					include $CONFIG->pluginspath . 'rubricbuilder/pages/index.php';
-				}
-				break;
-			case "view" :		
-    			if (isset($page[1])) {
-    				set_input('rubric_guid', $page[1]);				
-					if (isset($page[2])) {
-						set_input('rubric_revision', $page[2]);
-					}
-						
-					include($CONFIG->pluginspath . "rubricbuilder/pages/view.php");
-				} else {
-					include $CONFIG->pluginspath . 'rubricbuilder/pages/index.php';
-				}	
-				
-				break;
-			case "list" : 
-				if (isset($page[1])) {
-					set_input("listuser", $page[1]);
-				}
-				include $CONFIG->pluginspath . 'rubricbuilder/pages/index.php';
-				break;
-			default:
-				// If we're here, all we've got is a username
-				set_input('username', $page[0]);
-				include $CONFIG->pluginspath . 'rubricbuilder/pages/index.php';
-				break;				
+			// push breadcrumb
+			elgg_push_breadcrumb(elgg_echo('item:object:rubric'), "{$CONFIG->site->url}pg/rubric");
+
+			// forward away if invalid user.
+			if (!$user = get_user_by_username($username)) {
+				register_error(elgg_echo('rubricbuilder:error:unknown_username'));
+				forward($_SERVER['HTTP_REFERER']);
+			}
+
+			set_page_owner($user->getGUID());
+			$crumbs_title = sprintf(elgg_echo('rubricbuilder:owned_rubrics'), $user->name);
+			$crumbs_url = "{$CONFIG->site->url}pg/rubric/$username";
+			elgg_push_breadcrumb($crumbs_title, $crumbs_url);
+
+			$action = isset($page[1]) ? $page[1] : FALSE;
+			$page2 = isset($page[2]) ? $page[2] : FALSE;
+			$page3 = isset($page[3]) ? $page[3] : FALSE;
 			
-		
+			switch ($action) {
+				case 'history':
+					if ($page2) {
+						set_input('rubric_guid', $page2);
+						add_submenu_item(elgg_echo('rubricbuilder:label:view'), $CONFIG->url . "pg/rubric/{$user->username}/view/{$page2}", 'rubriclinks');
+						include $CONFIG->pluginspath . 'rubricbuilder/pages/history.php';
+					}
+					break;
+				case 'view':
+					if ($page2) {
+						set_input('rubric_guid', $page2);				
+						if ($page3)
+							set_input('rubric_revision', $page3);
+							include($CONFIG->pluginspath . "rubricbuilder/pages/view.php");
+					}
+					break;
+				case 'edit':
+					if ($page2) {
+						set_input('rubric_guid', $page2);
+						include $CONFIG->pluginspath . 'rubricbuilder/pages/edit.php';
+					}
+					break;
+				case 'new':
+					include $CONFIG->pluginspath . 'rubricbuilder/pages/add.php';
+					break;
+				case 'friends':
+					include $CONFIG->pluginspath . 'rubricbuilder/pages/friends.php';
+					break;
+				default:
+					include $CONFIG->pluginspath . 'rubricbuilder/pages/index.php';
+					break;
+					
+			}
+			
+		} else {
+			include $CONFIG->pluginspath . 'rubricbuilder/pages/everyone.php';
 		}
 		
 		return true;
@@ -160,10 +162,7 @@
 		global $CONFIG;
 		
 		if (get_context() == 'rubric') {
-			add_submenu_item(elgg_echo('rubricbuilder:myrubrics'), $CONFIG->wwwroot . 'pg/rubric/' .$_SESSION['user']->username);
-			add_submenu_item(elgg_echo('rubricbuilder:friendsrubrics'), $CONFIG->wwwroot . 'pg/rubric/friends/');
-			add_submenu_item(elgg_echo('rubricbuilder:allrubrics'), $CONFIG->wwwroot . 'pg/rubric/everyone/');
-			add_submenu_item(elgg_echo('rubricbuilder:create'), $CONFIG->wwwroot . 'pg/rubric/add/');
+
 		}
 		
 	}
@@ -204,7 +203,12 @@
 	function rubric_url($entity) {
 		global $CONFIG;
 		
-		return $CONFIG->url . "pg/rubric/view/{$entity->guid}/";
+		if (!$user = get_entity($entity->owner_guid)) {
+			// default to a standard view if no owner.
+			return FALSE;
+		}
+		
+		return $CONFIG->url . "pg/rubric/{$user->username}/view/{$entity->guid}/";
 	}
 
 	/** 

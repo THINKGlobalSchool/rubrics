@@ -144,7 +144,6 @@
 				// Zebra stripes 
 				if ($i % 2 == 0) {
 					$input_class = "alt";
-					echo $i;
 				}	
 				
 				if ($i == 0) {

@@ -34,6 +34,13 @@
 	// create content for main column
 	$content = elgg_view_title($title);
 	
+	$content = elgg_view('page_elements/content_header', array(
+		'context' => 'everyone',
+		'type' => 'rubric',
+		'all_link' => "{$CONFIG->site->url}pg/rubric"
+	));
+	
+	
 	$context = get_context();
 	set_context('search');
 		

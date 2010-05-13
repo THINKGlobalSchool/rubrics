@@ -30,8 +30,12 @@
 	
 	$rubric = get_entity($rubric_guid);
 	
+	elgg_push_breadcrumb($rubric->title, $rubric->getURL());
+	
 	// Title
 	$title = $rubric->title;
+	
+	$content = elgg_view('navigation/breadcrumbs');
 	
 	// create content for main column
 	$content .= elgg_view_entity($rubric, true);

@@ -33,12 +33,17 @@
 	$limit = get_input("limit", 10);
 	$offset = get_input("offset", 0);
 	
+	elgg_push_breadcrumb($vars['entity']->title, $vars['entity']->getURL());
+	elgg_push_breadcrumb(elgg_echo('rubricbuilder:history'));
+		
+	
 	// Title
 	$title = elgg_echo('rubricbuilder:history');
 	$title .= ': ' . $vars['entity']->title;
 	 
 	// create content for main column
-	$content = elgg_view_title($title);
+	$content = elgg_view('navigation/breadcrumbs');
+	$content .= elgg_view_title($title);
 	
 	$context = get_context();
 	set_context('search');

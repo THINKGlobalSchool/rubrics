@@ -134,7 +134,7 @@
 			if (!$rev || $current_revision == $count) {
 				if ($canedit) {
 					$revision = $rev ? "?rev=$rev"  : "";
-					$options .= "<span style='padding-right: 20px;'><a href={$vars['url']}pg/rubric/edit/{$vars['entity']->getGUID()}$revision>" . elgg_echo("edit") . "</a></span>";
+					$options .= "<span style='padding-right: 20px;'><a href={$vars['url']}pg/rubric/{$vars['user']->username}/edit/{$vars['entity']->getGUID()}$revision>" . elgg_echo("edit") . "</a></span>";
 				} 
 				
 				$options .= elgg_view("output/confirmlink", array(

@@ -51,6 +51,6 @@
 		remove_metadata($_SESSION['user']->guid,'rubriccached');
 		
 		// Forward to the main blog page
-		forward("pg/rubric/edit/" . $new_rubric->getGUID());
+		forward("pg/rubric/{$user->username}/edit/" . $new_rubric->getGUID());
 	//}	
 ?>

@@ -27,11 +27,16 @@
 	
 	$vars['entity'] = get_entity(get_input('rubric_guid'));
 	
+	elgg_push_breadcrumb($vars['entity']->title, $vars['entity']->getURL());
+	elgg_push_breadcrumb(elgg_echo('edit'));
+	
+	
 	// Title
 	$title = elgg_echo('rubricbuilder:editrubric');
 	
 	// create content for main column
-	$content = elgg_view_title($title);
+	$content = elgg_view('navigation/breadcrumbs');
+	$content .= elgg_view_title($title);
 	$content .= elgg_view("rubricbuilder/forms/edit", $vars);
 	
 	

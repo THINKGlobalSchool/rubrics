@@ -31,8 +31,15 @@
 	// Title
 	$title = elgg_echo('rubricbuilder:friendsrubrics');
 	
+	elgg_push_breadcrumb(elgg_echo('friends'));
+	
 	// create content for main column
-	$content = elgg_view_title($title);
+	$content = elgg_view('navigation/breadcrumbs');
+	$content .= elgg_view('page_elements/content_header', array(
+		'context' => 'friends',
+		'type' => 'rubric',
+		'all_link' => "{$CONFIG->site->url}pg/rubric"
+	));
 	
 	$context = get_context();
 	set_context('search');

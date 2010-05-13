@@ -52,8 +52,10 @@
 		remove_metadata($_SESSION['user']->guid,'rubriccontents');
 		remove_metadata($_SESSION['user']->guid,'rubriccached');
 	
+		$user = get_entity($rubric->owner_guid);
+	
 		// Forward to the main blog page
-		forward("pg/rubric/view/" . $guid);
+		forward("pg/rubric/{$user->username}/view/" . $guid);
 	} else {
 		register_error(elgg_echo("rubricbuilder:error"));
 	}
