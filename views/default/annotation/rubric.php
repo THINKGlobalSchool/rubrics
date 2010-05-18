@@ -24,7 +24,7 @@
 	$owner_guid = $annotation->owner_guid;
 	$owner = get_entity($owner_guid);
 			
-	$rev = sprintf(elgg_echo('rubricbuilder:revision'), 
+	$rev = sprintf(elgg_echo('rubricbuilder:revisioncreatedby'), 
 		friendly_time($annotation->time_created),
 		
 		"<a href=\"" . $owner->getURL() . "\">" . $owner->name ."</a>"

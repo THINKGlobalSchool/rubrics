@@ -83,12 +83,12 @@
 		$show_div = " style='display: block;' ";
 	}
 	
-	$content = "<br /><a href='#' id='show_hide_history' onclick=\"$('#rubric_revision_menu').toggle(200); return false;\">Revision History</a><br />
+	$content = "<br /><a href='#' id='show_hide_history' onclick=\"$('#rubric_revision_menu').toggle(200); return false;\">" . elgg_echo("rubricbuilder:revisionhistory") . "</a><br />
 				<div id='rubric_revision_menu' $show_div>
 					<table id='revision_menu_table'>
 						<tr>
 							<td colspan=3 class='revision_desc'>
-								Viewing Revision: $current_revision/<a href='$history_url'>$count</a> <br /> Revision Author: $author_content <br /> $restore_link  
+								" . elgg_echo("rubricbuilder:viewingrevision") . " $current_revision/<a href='$history_url'>$count</a> <br /> " . elgg_echo("rubricbuilder:revisionauthor") . ": $author_content <br /> $restore_link  
 							</td>
 						</tr>
 						<tr>
@@ -97,7 +97,7 @@
 							</td>
 							<td class='revision_select'>
 									<form id='revselect' action='{$CONFIG->url}pg/rubric/view/$rubric_guid/'>
-										Revision: " 
+										" . elgg_echo("rubricbuilder:revision") 
 											. elgg_view("input/pulldown", array('options_values' => $revisions_pulldown, 'internalname' => 'rev', 'internalid' => 'rev')) . "											
 											<input type='hidden' id='current_revision' value='$current_revision' />
 									</form>

@@ -28,8 +28,8 @@
 		'rubricbuilder:myrubrics' => 'Your Rubrics', 
 		'rubricbuilder:friendsrubrics' => 'Friends\' Rubrics',
 		'rubricbuilder:allrubrics' => 'All Site Rubrics',
-		'rubricbuilder:label:history' => "Rubric History",
-		'rubricbuilder:label:view' => "View Rubric",
+		'rubricbuilder:label:history' => 'Rubric History',
+		'rubricbuilder:label:view' => 'View Rubric',
 		
 		// Actions
 		'rubricbuilder:fork' => 'Make Copy',
@@ -43,8 +43,8 @@
 		'rubricbuilder:restored' => 'Rubric successfully restored',
 
 		// Confirmations
-		'rubricbuilder:forkconfirm' => "Are you sure you want to duplicate this rubric?",
-		'rubricbuilder:restoreconfirm' => "Are you sure you want to restore this rubric?",
+		'rubricbuilder:forkconfirm' => 'Are you sure you want to duplicate this rubric?',
+		'rubricbuilder:restoreconfirm' => 'Are you sure you want to restore this rubric?',
 		
 		// Errors
 		'rubricbuilder:notdeleted' => 'There was an error deleting the rubric',
@@ -52,20 +52,25 @@
 		'rubricbuilder:blank' => 'Rubric title cannot be blank', 
 		'rubricbuilder:failure'	=> 'Your action failed',
 	
-		// Titles
+		// Titles/Labels
 		'rubricbuilder:create' => 'Create New Rubric',
 		'rubricbuilder:editrubric' => 'Edit Rubric',
-		'rubricbuilder:history' => "History",
+		'rubricbuilder:history' => 'History',
+		'rubricbuilder:revision' => 'Revision: ',
+		'rubricbuilder:revisionhistory' => 'Revision History',
+		'rubricbuilder:viewingrevision' => 'Viewing Revision: ',
+		'rubricbuilder:revisionauthor' => 'Revision Author',
+		'rubricbuilder:revisioncreatedby' => 'Revision created %s by %s',
 		
         // River terms
-        'rubricbuilder:river:created' => "%s created",
-        'rubricbuilder:river:updated' => "%s updated",
-        'rubricbuilder:river:posted' => "%s posted",
+        'rubricbuilder:river:created' => '%s created',
+        'rubricbuilder:river:updated' => '%s updated',
+        'rubricbuilder:river:posted' => '%s posted',
         
         // River links
-        'rubricbuilder:river:create' => "a new rubric titled",
-        'rubricbuilder:river:update' => "a rubric titled",
-        'rubricbuilder:river:annotate' => "a comment on a rubric titled",
+        'rubricbuilder:river:create' => 'a new rubric titled',
+        'rubricbuilder:river:update' => 'a rubric titled',
+        'rubricbuilder:river:annotate' => 'a comment on a rubric titled',
 		'rubric:river:annotate' => 'a comment on a rubric titled',
 		
 		// Widget
@@ -74,10 +79,9 @@
 		'rubricbuilder:more' => 'More rubrics',
 		
 		// Other
-		'rubricbuilder:strapline' => "%s",
-		'rubricbuilder:revision' => 'Revision created %s by %s',
+		'rubricbuilder:strapline' => '%s',
 	
 	);
 
-	add_translation("en",$english);
+	add_translation('en',$english);
 ?>
