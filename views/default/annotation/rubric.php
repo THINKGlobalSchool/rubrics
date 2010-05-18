@@ -24,19 +24,20 @@
 	$owner_guid = $annotation->owner_guid;
 	$owner = get_entity($owner_guid);
 			
-	$rev = sprintf(elgg_echo('rubricbuilder:revision'), 
+	$date = sprintf(elgg_echo('rubricbuilder:revisioncreatedby'), 
 		friendly_time($annotation->time_created),
 		
 		"<a href=\"" . $owner->getURL() . "\">" . $owner->name ."</a>"
 	);
 	
-	$link = $entity->getURL() . "?rev=" . $annotation->id;
-	
-	
 	$revision = get_annotation($annotation->id);
 	$revision = unserialize($revision->value);
-	
+	$link = $entity->getURL() . "?rev=" . $annotation->id;
 	$title = $revision['title'];
+	$linked_title = "<a href=\"$link\" title=\"" . htmlentities($title) . "\">{$title}</a>";
+	
+
+	
 	
 	$info = <<< END
 	
@@ -44,5 +45,19 @@
 <div>$rev</div>
 END;
 
-	echo elgg_view_listing($icon, $info);
+	//echo elgg_view_listing($icon, $info);
+	
+	echo <<<EOT
+		<div class="rubric entity_listing clearfloat">
+			<div class="entity_listing_icon">
+				$icon
+			</div>
+			<div class="entity_listing_info">
+				<p class="entity_title">$linked_title</p>
+				<p class="entity_subtext">
+					$date
+				</p>
+			</div>
+		</div>
+EOT;
 ?>
