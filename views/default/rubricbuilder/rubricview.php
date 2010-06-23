@@ -1,5 +1,4 @@
 <?php
-
 	/**
 	 * Rubric full view
 	 * 

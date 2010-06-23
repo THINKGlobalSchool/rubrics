@@ -8,7 +8,6 @@
 	 * @copyright THINK Global School 2010
 	 * @link http://www.thinkglobalschool.com/
 	 * 
-	 * Code borrows from Pages plugin
 	 */
 
 	if (isset($vars['entity']) && $vars['entity'] instanceof Rubric) {

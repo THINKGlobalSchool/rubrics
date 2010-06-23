@@ -61,6 +61,7 @@
 		'rubricbuilder:viewingrevision' => 'Viewing Revision: ',
 		'rubricbuilder:revisionauthor' => 'Revision Author',
 		'rubricbuilder:revisioncreatedby' => 'Revision created %s by %s',
+		'rubricbuilder:noresults' => 'No Results',
 		
         // River terms
         'rubricbuilder:river:created' => '%s created',

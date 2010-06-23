@@ -37,9 +37,15 @@
 	$context = get_context();
 	set_context('search');
 		
-	$content .= list_user_friends_objects(page_owner(),'rubric',10,false,false);
+	$list = list_user_friends_objects(page_owner(),'rubric',10,false,false);
 	
 	set_context($context);
+	
+	if ($list) {
+		$content .= $list;
+	} else {
+		$content .= elgg_view('rubricbuilder/noresults');
+	}
 	
 	// layout the sidebar and main column using the default sidebar
 	$body = elgg_view_layout('two_column_left_sidebar', '', $content);

@@ -37,9 +37,15 @@
 	$context = get_context();
 	set_context('search');
 		
-	$content .= elgg_list_entities(array('types' => 'object', 'subtypes' => 'rubric', 'limit' => $limit, 'offset' => $offset, 'full_view' => FALSE));
+	$list = elgg_list_entities(array('types' => 'object', 'subtypes' => 'rubric', 'limit' => $limit, 'offset' => $offset, 'full_view' => FALSE));
 
 	set_context($context);
+	
+	if ($list) {
+		$content .= $list;
+	} else {
+		$content .= elgg_view('rubricbuilder/noresults');
+	}
 	
 	// layout the sidebar and main column using the default sidebar
 	$body = elgg_view_layout('two_column_left_sidebar', '', $content);
