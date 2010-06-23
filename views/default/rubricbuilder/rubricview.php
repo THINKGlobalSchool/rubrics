@@ -31,15 +31,13 @@
 			for ($i = 0; $i < $count; $i++) {
 				$revisions_local[$revisions[$i]->id] = $i + 1;
 			}
-
-			
 				
 			//	$current_revision = $count;
-
 			
 			// If we're looking at a revision, grab the content for that
-			$rev = (int)get_input('rev');
+			$rev = (int)get_input('rev',0);
 			if ($rev) {	
+				
 				$revision = get_annotation($rev);
 				// Make sure we have an annotation object, and that it belongs to this rubric
 				if ($revision && $revision->entity_guid == $vars['entity']->getGUID()) {
