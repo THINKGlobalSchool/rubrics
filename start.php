@@ -72,7 +72,7 @@
 			$username = $page[0];
 
 			// push breadcrumb
-			elgg_push_breadcrumb(elgg_echo('item:object:rubric'), "{$CONFIG->site->url}pg/rubric");
+			elgg_push_breadcrumb(elgg_echo('rubricbuilder:allrubrics'), "{$CONFIG->site->url}pg/rubric");
 
 			// forward away if invalid user.
 			if (!$user = get_user_by_username($username)) {

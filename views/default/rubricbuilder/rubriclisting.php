@@ -35,6 +35,8 @@
 				  )
 				);
 			$linked_title = "<a href=\"{$rubric->getURL()}\" title=\"" . htmlentities($rubric->title) . "\">{$rubric->title}</a>";
+			$owner_link = "<a href='{$vars['url']}pg/rubric/{$owner->username}/'>{$owner->name}</a>";
+			$author_text = sprintf(elgg_echo('blog:author_by_line'), $owner_link);
 			$tags = elgg_view('output/tags', array('tags' => $vars['entity']->tags));
 		
 			$date = friendly_time($rubric->time_created);
@@ -53,14 +55,14 @@
 			if (!$rev || $current_revision == $count) {
 				if ($canedit) {
 					$revision = $rev ? "?rev=$rev"  : "";
-					$options .= "<span style='padding-right: 20px;'><a href={$vars['url']}pg/rubric/{$vars['user']->username}/edit/{$vars['entity']->getGUID()}$revision>" . elgg_echo("edit") . "</a></span>";
+					$options .= "<span class='entity_edit'><a href={$vars['url']}pg/rubric/{$vars['user']->username}/edit/{$vars['entity']->getGUID()}$revision>" . elgg_echo("edit") . "</a></span>";
 				} 
 				
-				$options .= elgg_view("output/confirmlink", array(
+				$options .= "<span class='entity_edit'>" . elgg_view("output/confirmlink", array(
 							'href' => $vars['url'] . "action/rubric/fork?rubric_guid=" . $vars['entity']->getGUID(),
 							'text' => elgg_echo('rubricbuilder:fork'),
 							'confirm' => elgg_echo('rubricbuilder:forkconfirm'),
-							));
+							)) . "</span>";
 					
 				if ($canedit && $can_delete) {
 					if ($can_delete) {								
@@ -87,6 +89,7 @@
 						<div class="entity_metadata">$options</div>
 						<p class="entity_title">$linked_title</p>
 						<p class="entity_subtext">
+							$author_text
 							$date
 							$comments_link
 						</p>

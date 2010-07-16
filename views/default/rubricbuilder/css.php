@@ -104,7 +104,7 @@ table.rubric_table {
 }
 
 .rubric p {
-	margin: 0 0 5px 0;
+/**	margin: 0 0 5px 0;**/
 }
 
 .rubric .strapline {
