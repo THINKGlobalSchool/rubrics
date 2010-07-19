@@ -49,7 +49,7 @@ textarea.alt, td.alt {
 input.rubric_header, td.rubric_header {
 	font-weight: bold;
 	text-align: center;
-	background: #bbdaf7;
+	background: #bbbbbb;
 	border: 1px solid white;
 	width: 127px;
 	height: 15px;

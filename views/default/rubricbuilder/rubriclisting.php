@@ -23,7 +23,7 @@
 
 			// Are we allowed to delete?
 			$can_delete = false;
-			if (($vars['user']->getGUID() == $rubric->owner_guid) || ($vars['user']->admin || $vars['user']->siteadmin)) {
+			if (($vars['user']->getGUID() == $rubric->owner_guid) || $vars['user']->isAdmin()) {
 				$can_delete = true;
 			}
 			

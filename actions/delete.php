@@ -25,7 +25,7 @@
 	$user = get_entity(get_loggedin_userid());
 	
 	$can_delete = false;	
-	if (($user->getGUID() == $rubric->owner_guid) || ($user->admin || $user->siteadmin)) {
+	if (($user->getGUID() == $rubric->owner_guid) || $user->isAdmin()) {
 		$can_delete = true;
 	}
 	
