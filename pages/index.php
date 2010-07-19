@@ -33,11 +33,17 @@
 	
 	// create content for main column
 	$content = elgg_view('navigation/breadcrumbs');
-	$content .= elgg_view('page_elements/content_header', array(
-		'context' => 'mine',
-		'type' => 'rubric',
-		'all_link' => "{$CONFIG->site->url}pg/rubric"
-	));
+	
+	
+	if ($page_owner == get_loggedin_user()) {
+		$content .= elgg_view('page_elements/content_header', array(
+			'context' => 'mine',
+			'type' => 'rubric',
+			'all_link' => "{$CONFIG->site->url}pg/rubric"
+		));
+	} else {
+		$content .= elgg_view('page_elements/content_header_member', array('type' => elgg_echo('rubric')));
+	}
 	
 	$context = get_context();
 	set_context('search');

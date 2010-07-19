@@ -51,6 +51,9 @@
 		// Register plugin hook to extend permissions checking to include write access
 		register_plugin_hook('permissions_check', 'object', 'rubric_write_permission_check');
 		
+		// Profile hook	
+		register_plugin_hook('profile_menu', 'profile', 'rubric_profile_menu');
+		
 	    // This operation only affects the db on the first call for this subtype
 	    // If you change the class name, you'll have to hand-edit the db
 		run_function_once("rubricbuilder_run_once");
@@ -193,6 +196,27 @@
 		}
 		
 	}
+	
+	/**
+	 * Plugin hook to add rubrics to users profile block
+	 * 	
+	 * @param unknown_type $hook
+	 * @param unknown_type $entity_type
+	 * @param unknown_type $returnvalue
+	 * @param unknown_type $params
+	 * @return unknown
+	 */
+	function rubric_profile_menu($hook, $entity_type, $return_value, $params) {
+		global $CONFIG;
+
+		$return_value[] = array(
+			'text' => elgg_echo('rubric'),
+			'href' => "{$CONFIG->url}pg/rubric/{$params['owner']->username}",
+		);
+
+		return $return_value;
+	}
+	
 	
 	/**
 	 * Populates the ->getUrl() method for rubrics
