@@ -23,6 +23,9 @@
 		// Extend Metatags (for js)
 		elgg_extend_view('metatags','rubricbuilder/metatags'); 
 		
+		// Extend profile_ownerblock
+		elgg_extend_view('profile_ownerblock/extend', 'rubricbuilder/profile_link');
+		
 		// Register page handler
 		register_page_handler('rubric','rubricbuilder_page_handler');
 		

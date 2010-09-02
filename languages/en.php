@@ -16,7 +16,7 @@
 		'rubric' => 'Rubrics',
 		'item:object:rubric' => 'Rubrics',
 		'rubricbuilder:title' => 'Rubric',
-		'rubricbuilder:owned_rubrics' => '%s',
+		'rubricbuilder:owned_rubrics' => '%s\'s Rubrics',
 		
 		// Default Content
 		'rubricbuilder:criteria:default' => 'Criteria', 
