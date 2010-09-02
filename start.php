@@ -26,6 +26,9 @@
 		// Extend profile_ownerblock
 		elgg_extend_view('profile_ownerblock/extend', 'rubricbuilder/profile_link');
 		
+		// Extend options for favorites
+		elgg_extend_view('rubric/options', 'favorites/form');
+		
 		// Register page handler
 		register_page_handler('rubric','rubricbuilder_page_handler');
 		

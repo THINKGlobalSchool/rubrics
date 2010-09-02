@@ -80,6 +80,7 @@
 				}
 			} 
 			
+			
 			echo <<<EOT
 				<div class="rubric entity_listing clearfloat">
 					<div class="entity_listing_icon">

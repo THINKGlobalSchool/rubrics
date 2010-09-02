@@ -126,9 +126,6 @@ table.rubric_table {
 	height: 40px;
 }
 
-.rubric .entity_listing_info {
-	width: 675px;
-}
 
 
 .rubric p.listingtags {
