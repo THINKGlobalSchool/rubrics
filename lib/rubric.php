@@ -23,8 +23,8 @@
 		const LEVEL_4				= "rubricbuilder:level4"; // Default level 4 text
 			
 		// Add to ElggObject attributes
-		protected function initialise_attributes() {
-			parent::initialise_attributes();
+		protected function initializeAttributes() {
+			parent::initializeAttributes();
 			$this->attributes['subtype'] = 'rubric';
 			// Logged in access by default
 			$this->attributes['access_id'] = 1;

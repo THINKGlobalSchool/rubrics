@@ -25,7 +25,6 @@
 	//if ($rubric->getSubtype() == "rubric" && $rubric->canEdit()) {
 		
 		$new_rubric = new Rubric();
-		$new_rubric->subtype			= 'rubric';
 		$new_rubric->contents			= $rubric->contents;
 		$new_rubric->title 				= "Copy of " . $rubric->title;
 		$new_rubric->description 		= $rubric->description;

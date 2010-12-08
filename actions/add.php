@@ -52,7 +52,6 @@
 
 	$rubric = new Rubric();
 	$rubric->contents			= serialize($rubric_content);
-	$rubric->subtype			= 'rubric';
 	$rubric->title 				= $title;
 	$rubric->description 		= $description;
 	$rubric->owner_guid			= get_loggedin_userid();
