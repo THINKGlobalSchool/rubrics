@@ -44,7 +44,7 @@
 	$context = get_context();
 	set_context('search');
 		
-	$content .= elgg_list_entities(array('types' => 'object', 'subtypes' => 'rubric', 'limit' => $limit, 'offset' => $offset, 'full_view' => FALSE));
+	$content .= elgg_list_entities(array('types' => array('object', 'rubric'), 'subtypes' => 'rubric', 'limit' => $limit, 'offset' => $offset, 'full_view' => FALSE));
 
 	set_context($context);
 	
