@@ -159,7 +159,7 @@
 				if (($write_permission != 0) && (in_array($write_permission,$list))) {
 					return true;
 				} else if ($write_permission == -2 && ($user)) {
-					if ($user->isFriendOf($params['entity']->getOwner())) {
+					if ($user->isFriendOf($params['entity']->getOwnerGUID())) {
 						return true;
 					}
 				}
