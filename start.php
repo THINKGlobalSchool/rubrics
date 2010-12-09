@@ -21,7 +21,7 @@
 		elgg_extend_view('css','rubricbuilder/css');
 		
 		// Extend Metatags (for js)
-		elgg_extend_view('metatags','rubricbuilder/metatags'); 
+		elgg_extend_view('html_head/extend','rubricbuilder/metatags'); 
 		
 		// Extend profile_ownerblock
 		elgg_extend_view('profile_ownerblock/extend', 'rubricbuilder/profile_link');
