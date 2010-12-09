@@ -42,11 +42,11 @@
 		register_elgg_event_handler('pagesetup','system','rubricbuilder_submenus');
 
 		// Register actions
-		register_action('rubric/add', false, $CONFIG->pluginspath . 'rubricbuilder/actions/add.php');
-		register_action('rubric/edit', false, $CONFIG->pluginspath . 'rubricbuilder/actions/edit.php');
-		register_action('rubric/delete', false, $CONFIG->pluginspath . 'rubricbuilder/actions/delete.php');
-		register_action('rubric/fork', false, $CONFIG->pluginspath . 'rubricbuilder/actions/fork.php');
-		register_action('rubric/restore', false, $CONFIG->pluginspath . 'rubricbuilder/actions/restore.php');
+		elgg_register_action('rubric/add', $CONFIG->pluginspath . 'rubricbuilder/actions/add.php');
+		elgg_register_action('rubric/edit', $CONFIG->pluginspath . 'rubricbuilder/actions/edit.php');
+		elgg_register_action('rubric/delete', $CONFIG->pluginspath . 'rubricbuilder/actions/delete.php');
+		elgg_register_action('rubric/fork', $CONFIG->pluginspath . 'rubricbuilder/actions/fork.php');
+		elgg_register_action('rubric/restore', $CONFIG->pluginspath . 'rubricbuilder/actions/restore.php');
 				
 		// Add widget 
 		add_widget_type('rubric',elgg_echo('Rubrics'),elgg_echo('rubricbuilder:widget:description'));
