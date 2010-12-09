@@ -10,12 +10,6 @@
 	 * 
 	 */
 
-	// Make sure we're logged in (send us to the front page if not)
-	gatekeeper();
-
-	// Action gatekeeper
-	action_gatekeeper();
-
 	// Get input data
 	$guid = (int)get_input('rubric_guid');
 		

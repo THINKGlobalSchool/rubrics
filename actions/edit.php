@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Add rubric action
+	 * Edit rubric action
 	 * 
 	 * @package RubricBuilder
 	 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -10,12 +10,6 @@
 	 * 
 	 */
 
-
-	// must be logged in
-	gatekeeper();
-	
-	// must have security token 
-	action_gatekeeper();
 	
 	// get parameters that were posted
 	$guid			= (int)get_input('rubric_guid');

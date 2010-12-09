@@ -9,13 +9,6 @@
 	 * @link http://www.thinkglobalschool.com/
 	 * 
 	 */
-
-
-	// must be logged in
-	gatekeeper();
-	
-	// must have security token 
-	action_gatekeeper();
 	
 	// get parameters that were posted
 	$title 			= get_input('rubric_title');
