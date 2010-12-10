@@ -18,7 +18,7 @@
 		include_once('lib/rubric.php');
 
 		// Extend CSS
-		elgg_extend_view('css','rubricbuilder/css');
+		elgg_extend_view('css/screen','rubricbuilder/css');
 		
 		// Extend Metatags (for js)
 		elgg_extend_view('html_head/extend','rubricbuilder/metatags'); 
