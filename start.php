@@ -215,7 +215,7 @@ function rubric_annotate_comments($hook, $entity_type, $returnvalue, $params)
 function rubric_profile_menu($hook, $entity_type, $return_value, $params) {
 	global $CONFIG;
 
-	if ($params['owner'] instanceof ElggGroup && $params['owner']->rubrics_enable == 'yes') {
+	if (elgg_instanceof($params['owner'], 'user') || ($params['owner'] instanceof ElggGroup && $params['owner']->rubrics_enable == 'yes')) {
 		$return_value[] = array(
 			'text' => elgg_echo('rubric'),
 			'href' => "{$CONFIG->url}pg/rubric/{$params['owner']->username}",
