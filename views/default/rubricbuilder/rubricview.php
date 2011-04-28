@@ -85,19 +85,19 @@
 			}
 			
 			// Build rubric table
-			$rubric_table = "<table class='rubric_table' cellpadding='10px' cellspacing='10px'>";
+			$rubric_table = "<table class='rubric-table' cellpadding='10px' cellspacing='10px'>";
 			for ($i = 0; $i < $num_rows; $i++) {
 				$rubric_table .= "<tr>";
 				for ($j = 0; $j < $num_cols; $j++) {
 
-					$input_class = 'rubric_td';
+					$input_class = 'rubric-cell';
 
 					// Zebra stripes
 					if ($i % 2 == 0 && $i != 0)
 						$input_class .= " alt";
 
 					if ($i == 0) {
-						$rubric_table .= "<td style='height: 15px;' class='$input_class rubric_header'><p>";
+						$rubric_table .= "<td style='height: 15px;' class='$input_class rubric-header'><p>";
 						$rubric_table .= elgg_view('output/text', array('internalname' => $i . '|' . $j, 'value' => elgg_echo($contents[$i][$j])));
 					} else {
 						$rubric_table .= "<td class='$input_class'><p>";

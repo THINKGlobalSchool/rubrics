@@ -135,7 +135,7 @@
 		$remove = $vars['url'] . "mod/rubricbuilder/images/minus.gif";
 		  
 		// Build rubric input form
-		$rubric_input = "<table class='rubric_table' id='rubric'>";
+		$rubric_input = "<table class='rubric-table' id='rubric'>";
 		for ($i = 0; $i < $num_rows; $i++) {
 			$rubric_input .= "<tr id='row" . $i . "'>";
 			$input_class = '';
@@ -148,9 +148,9 @@
 				
 				if ($i == 0) {
 					$rubric_input .= "<td style='height: 17px;'>";
-					$rubric_input .= elgg_view('input/text', array('internalname' => $i . '|' . $j, 'value' => elgg_echo($contents[$i][$j]), 'class' => $input_class . " rubric_header"));
+					$rubric_input .= elgg_view('input/text', array('internalname' => $i . '|' . $j, 'value' => elgg_echo($contents[$i][$j]), 'class' => $input_class . " rubric-header"));
 				} else {
-					$input_class .= ' rubric_input';
+					$input_class .= ' rubric-input';
 					$rubric_input .= "<td>";
 			    	$rubric_input .=  elgg_view('input/plaintext', array('internalname' => $i . '|' . $j, 'value' => elgg_echo($contents[$i][$j]), 'class' => $input_class));
 				}
@@ -158,7 +158,7 @@
 				$rubric_input .= "</td>";
 			}
 			if ($i != 0) {
-				$rubric_input .= "<td style='vertical-align: middle;'><div id='remove_row' class='remove_img' onmouseout='this.className=\"remove_img\"'  onmouseover='this.className=\"remove_img_over\"'></div></td>";
+				$rubric_input .= "<td style='vertical-align: middle;'><div id='remove_row' class='remove-button'></div></td>";
 			}
 			$rubric_input .= "</tr>";
 		} 

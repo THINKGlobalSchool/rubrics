@@ -83,7 +83,6 @@
 		'rubricbuilder:more' => 'More rubrics',
 		
 		// Other
-		'rubricbuilder:strapline' => '%s',
 		'rubricbuilder:comments:allow' => 'Allow Comments',
 	
 	);
