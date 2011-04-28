@@ -24,6 +24,7 @@ $english = array(
 	'rubricbuilder:level2' => '2',
 	'rubricbuilder:level3' => '3',
 	'rubricbuilder:level4' => '4',
+	'rubricbuilder:level5' => '5',
 	
 	// Menu
 	'rubricbuilder:pagetitle'	=> 'Rubrics',

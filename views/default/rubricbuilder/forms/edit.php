@@ -16,6 +16,7 @@
 	// Fire this when document is 100% loaded
 	$(document).ready(function() {	
 		counter = $("#num_rows").val();
+		columns = $("#num_cols").val();
 
 		// Set up event bindings
 		bindRemoveClickHandler();
@@ -52,6 +53,11 @@ if (isset($vars['entity'])) {
 		$contents		= $vars['entity']->getContents();
 		$num_rows		= $vars['entity']->getNumRows();
 		$num_cols		= $vars['entity']->getNumCols();				
+	}
+	
+	// For now, editing will always have 6 columns
+	if ($num_cols == 5) {
+		$num_cols = 6;
 	}
 	
 	$action			= "rubric/edit";
@@ -158,7 +164,7 @@ for ($i = 0; $i < $num_rows; $i++) {
 		$rubric_input .= "</td>";
 	}
 	if ($i != 0) {
-		$rubric_input .= "<td style='vertical-align: middle;'><div id='remove_row' class='remove-button'></div></td>";
+		$rubric_input .= "<td style='vertical-align: middle;'><div id='rubric-remove-row' class='remove-button'></div></td>";
 	}
 	$rubric_input .= "</tr>";
 } 
