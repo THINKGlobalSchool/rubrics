@@ -1,3 +1,2 @@
 <?php
-	echo $vars['url'] . "mod/rubricbuilder/images/rubric.gif";
-?>
+echo $vars['url'] . "mod/rubricbuilder/images/rubric.gif";

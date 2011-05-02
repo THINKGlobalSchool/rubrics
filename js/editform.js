@@ -6,9 +6,11 @@
 // Global counter  for rows
 var counter = null;
 
+var columns = null;
+
 /** Make sure that new and existing remove buttons have the proper click event bound at all times **/
 function bindRemoveClickHandler() {
-	$("div#remove_row").each(
+	$("div#rubric-remove-row").each(
 		function(index) {
 			$(this).unbind('click.addit').bind('click.addit', function() {
 				// Get the <tr> id so we know which row this particular click will remove
@@ -37,12 +39,12 @@ function addRow() {
 	// Row HTML
 	var r = "";
 	r += "<tr id='" + id + "'>";
-	r += 	"<td><textarea name='" + counter + "|0' class='rubric_input " + class + "'></textarea></td>";
-	r += 	"<td><textarea name='" + counter + "|1' class='rubric_input " + class + "'></textarea></td>";
-	r += 	"<td><textarea name='" + counter + "|2' class='rubric_input " + class + "'></textarea></td>";
-	r += 	"<td><textarea name='" + counter + "|3' class='rubric_input " + class + "'></textarea></td>";
-	r += 	"<td><textarea name='" + counter + "|4' class='rubric_input " + class + "'></textarea></td>";
-	r += 	"<td style='vertical-align: middle;'><div id='remove_row' class='remove_img' onmouseout='this.className=\"remove_img\"'  onmouseover='this.className=\"remove_img_over\"'></div></td>";
+	
+	var i = 0;
+	for (i = 0; i < columns; i++) {
+		r += 	"<td><textarea name='" + counter + "|" + i + "' class='rubric-input " + class + "'></textarea></td>";
+	}
+	r += 	"<td style='vertical-align: middle;'><div id='rubric-remove-row' class='remove-button'></div></td>";
 	r += "</tr>";
 
 	// Incremement counter
@@ -104,13 +106,13 @@ function fixTable() {
 								$(this).attr("name", i + "|" + j)
 								
 								// Zebra stripes
-								$(this).removeClass('rubric_input alt');
-								var class = 'rubric_input';
+								$(this).removeClass('rubric-input alt');
+								var class = 'rubric-input';
 								var alt = '';
 								if (i % 2 == 0)
 									alt += "alt";
 									
-								$(this).addClass('rubric_input '+alt);
+								$(this).addClass('rubric-input '+alt);
 							}
 						}
 					);
