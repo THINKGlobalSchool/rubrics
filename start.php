@@ -8,12 +8,37 @@
  * @copyright THINK Global School 2010
  * @link http://www.thinkglobalschool.com/
  *
+ * @todo The storage approach can be simplified by making the following changes. These would
+ * require either backword compatibility in the models or an upgrade.
+ *
+ * Old version (Rubric entity):
+ *	->num_rows and ->num_cols stored dimension
+ *	->contents stored headers and data
+ *
+ * Old version (revision annotation):
+ *	->rows and ->cols stored dimension
+ *  ->contents stored headers and data
+ *
+ * New version (Rubric entity):
+ *	->headers stores the header information
+ *  ->data stores the actual rubric information
+ *
+ * New version (revision annotation):
+ *	->headers stores the header information
+ *	->data stores the rubric data
+ *
+ *
  * @todo
  *	delete views/default/rubrics/profile_link.php
  *	delete metatags view
  *	work out sticky forms for column info.
  *
  *	deprecate the river view using the old rubricbuilder name
+ *	Is the rubric content running through elgg_echo() on purpose?
+ *	Remove the edit option when viewing a revision
+ *	Anything extending rubric/options should now extend the entity menu for rubric entities. (See
+ *	how the fork menu is added.)
+ *	Need a fork icon
  */
 
 elgg_register_event_handler('init', 'system', 'rubrics_init');
@@ -44,10 +69,9 @@ function rubrics_init() {
 
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'rubrics_owner_block_menu');
 
-	// Profile hook
-	// I think this is user_hover now.
-	//register_plugin_hook('profile_menu', 'profile', 'rubric_profile_menu');
+	// Profile menu hook is user_hover now
 	elgg_register_plugin_hook_handler('register', 'menu:user_hover', 'rubrics_user_hover_menu');
+	elgg_register_plugin_hook_handler('register', 'menu:entity', 'rubrics_add_fork_menu_item');
 	
 	// Extend options for favorites
 	// @todo not supported in current 1.8
@@ -72,7 +96,6 @@ function rubrics_init() {
 	register_entity_type('object', 'rubric');
 }
 
-
 /**
  * Dispatcher for rubrics.
  *
@@ -80,13 +103,12 @@ function rubrics_init() {
  *  All rubrics:      rubrics/all
  *  User's rubrics:   rubrics/owner/<username>
  *  Friends' rubrics: rubrics/friends/<username>
- *  View rubric:      rubrics/view/<guid>/<title>
+ *  View rubric:      rubrics/view/<guid>/<title><?rev=<annotation_id>> Optional history
  *  New rubric:       rubrics/add/<container_guid> (container: user, group, parent)
  *  Edit rubric:      rubrics/edit/<guid>
  *  Group rubrics:    rubrics/group/<guid>/owner
- *  Rubric history:   rubrics/history/<guid>/title
  *
- * Title is ignored
+ * Titles are ignored
  *
  * @param array $page
  */
@@ -221,8 +243,7 @@ function rubrics_page_handler($page) {
  * @param unknown_type $returnvalue
  * @param unknown_type $params
  */
-function rubric_write_permission_check($hook, $entity_type, $returnvalue, $params)
-{
+function rubric_write_permission_check($hook, $entity_type, $returnvalue, $params) {
 	if ($params['entity']->getSubtype() == 'rubric') {
 	
 		$write_permission = $params['entity']->write_access_id;
@@ -240,28 +261,6 @@ function rubric_write_permission_check($hook, $entity_type, $returnvalue, $param
 		}
 	}
 }
-
-/**
- * Plugin hook to add rubrics to users profile block
- * 	
- * @param unknown_type $hook
- * @param unknown_type $entity_type
- * @param unknown_type $returnvalue
- * @param unknown_type $params
- * @return unknown
- */
-function rubric_profile_menu($hook, $entity_type, $return_value, $params) {
-	global $CONFIG;
-
-	if (elgg_instanceof($params['owner'], 'user') || ($params['owner'] instanceof ElggGroup && $params['owner']->rubrics_enable == 'yes')) {
-		$return_value[] = array(
-			'text' => elgg_echo('rubric'),
-			'href' => "{$CONFIG->url}pg/rubric/{$params['owner']->username}",
-		);
-	}
-	return $return_value;
-}
-
 
 /**
  * Populates the ->getUrl() method for rubrics
@@ -282,10 +281,6 @@ function rubrics_url_handler($entity) {
 	
 	return "rubrics/view/{$entity->guid}/$title";
 }
-
-
-
-
 
 /**
  * Add a menu item to an ownerblock
@@ -328,7 +323,6 @@ function rubrics_user_hover_menu($hook, $type, $return, $params) {
 
 	return $return;
 }
-
 
 /**
  * Prepares form values for the rubrics form.
@@ -387,4 +381,79 @@ function rubrics_prepare_form_vars($entity = null, $revision_id = null) {
 	elgg_clear_sticky_form('rubrics');
 
 	return $values;
+}
+
+/**
+ * Adds the fork menu entry
+ *
+ * @param type $hook
+ * @param type $type
+ * @param ElggMenuItem $return
+ * @param type $options
+ * @return ElggMenuItem
+ */
+function rubrics_add_fork_menu_item($hook, $type, $return, $options) {
+	$entity = elgg_extract('entity', $options);
+	if (elgg_instanceof($entity, 'object', 'rubric')) {
+//		$text = '<span class="elgg-rubrics-icon elgg-rubrics-icon-fork"></span>';
+		$text = elgg_echo('fork');
+		$url = "action/rubrics/fork";
+		$url = elgg_http_add_url_query_elements($url, array('guid' => $entity->getGUID()));
+		$item = new ElggMenuItem('fork', $text, $url);
+		$return[] = $item;
+		return $return;
+	}
+}
+
+
+/**
+ * Returns size information and content for a rubric keeping the legacy system compatible
+ *
+ * A rubric like:
+ * +----+----+----+
+ * | h1 | h2 | h3 |
+ * +----+----+----+
+ * | A1 | A2 | A3 |
+ * +----+----+----+
+ * | B1 | B2 | B3 |
+ * +----+----+----+
+ *
+ * Returns data like:
+ * array(
+ *	'columns' => 3, // just a count of the headers
+ *	'rows'    => 2, // just count(data) / count(headers)
+ *	'headers' => array('h1', 'h2', 'h3')
+ *	'data'    => array(array('A1', 'A2', 'A3'), array('B1', 'B2', 'B3'))
+ * )
+ *
+ * @param object $rubric A rubric object, a revision annotation, or an object with similar structure.
+ * @return array In the form array(
+ *	'columns' => (int)   Number of columns (not including controls row)
+ *	'rows'    => (int)   Number of rows (not including header or controls rows)
+ *  'headers' => (array) The headers
+ *  'data'    => (array) The data of the rubric
+ */
+function rubrics_get_rubric_dimenion($rubric) {
+	// check for annotations
+	if ($rubric instanceof ElggAnnotation) {
+		$info = unserialize($rubric->value);
+		// check legacy
+		if (isset($info['rows'])) {
+			$contents = unserialize($info['contents']);
+			$headers = array_shift($contents);
+			$data = $contents;
+			$columns = $info['cols'];
+			$rows = $info['rows'];
+		} else {
+			$data = $info['data'];
+			$headers = $info['headers'];
+			$columns = count($headers);
+			$rows = ceil(count($data) / count($headers));
+		}
+	} else {
+		// check legacy
+		if (isset($rubric->num_cols)) {
+			$contents = unserialize($rubric->contents);
+		}
+	}
 }

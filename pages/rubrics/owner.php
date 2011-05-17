@@ -10,50 +10,47 @@
  * 
  */
 
-// include the Elgg engine
-include_once dirname(dirname(dirname(dirname(__FILE__)))) . "/engine/start.php"; 
+// access check for closed groups
+group_gatekeeper();
 
-// logged in users only
-gatekeeper();
+$owner = elgg_get_page_owner_entity();
+elgg_push_breadcrumb($owner->name);
 
-// if username or owner_guid was not set as input variable, we need to set page owner
-// Get the current page's owner
-$page_owner = page_owner_entity();
-if (!$page_owner) {
-	$page_owner_guid = get_loggedin_userid();
-	if ($page_owner_guid)
-		set_page_owner($page_owner_guid);
-}	
+$params = array();
 
-$limit = get_input("limit", 10);
-$offset = get_input("offset", 0);
-
-// Title
-$title = elgg_echo('rubricbuilder:myrubrics');
-
-// create content for main column
-$content = elgg_view('navigation/breadcrumbs');
-
-
-if ($page_owner == get_loggedin_user()) {
-	$content .= elgg_view('page_elements/content_header', array(
-		'context' => 'mine',
-		'type' => 'rubric',
-		'all_link' => "{$CONFIG->site->url}pg/rubric"
-	));
+if ($owner->guid == elgg_get_logged_in_user_guid()) {
+	// user looking at own files
+	$title = elgg_echo('rubrics:mine');
+	$params['filter_context'] = 'mine';
+} elseif (elgg_instanceof($owner, 'user')) {
+	// someone else's files
+	$title = elgg_echo("rubrics:user", array($owner->name));
+	// do not show button or select a tab when viewing someone else's posts
+	$params['filter_context'] = 'none';
+	$params['buttons'] = '';
 } else {
-	$content .= elgg_view('page_elements/content_header_member', array('type' => elgg_echo('rubric')));
+	// group files
+	$title = elgg_echo("rubrics:user", array($owner->name));
+	$params['filter'] = '';
 }
 
-$context = get_context();
-set_context('search');
+$content = elgg_list_entities(array(
+	'types' => 'object',
+	'subtypes' => 'rubric',
+	'container_guid' => $owner->guid,
+	'limit' => 10,
+	'full_view' => false,
+));
 
-$content .= elgg_list_entities(array('types' => 'object', 'subtypes' => 'rubric', 'container_guid' => page_owner(), 'limit' => $limit, 'offset' => $offset, 'full_view' => FALSE));
+if (!$content) {
+	$content = elgg_echo("rubric:none");
+}
 
-set_context($context);
 
-// layout the sidebar and main column using the default sidebar
-$body = elgg_view_layout('one_column_with_sidebar', $content, elgg_view('favorites/display', array('object_type' => 'rubric')));
+$params['content'] = $content;
+$params['title'] = $title;
+$params['sidebar'] = $sidebar;
 
-// create the complete html page and send to browser
+$body = elgg_view_layout('content', $params);
+
 echo elgg_view_page($title, $body);

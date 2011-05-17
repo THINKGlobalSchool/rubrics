@@ -12,7 +12,7 @@
  */
 
 class Rubric extends ElggObject {
-	
+
 	// Useful constant
 	// default size
 	const NUM_ROWS = 4;
@@ -35,7 +35,7 @@ class Rubric extends ElggObject {
 		$this->attributes['subtype'] = 'rubric';
 		$this->attributes['access_id'] = ACCESS_LOGGED_IN;
 	}
-	
+
 	/**
 	 * Returns the contents of the rubric
 	 *
@@ -51,7 +51,7 @@ class Rubric extends ElggObject {
 
 	/**
 	 * Returns the default headers for a rubric.
-	 * 
+	 *
 	 * @return type array
 	 */
 	public static function getDefaultContent() {

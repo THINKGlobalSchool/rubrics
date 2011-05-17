@@ -21,6 +21,10 @@ $container_guid = elgg_extract('container_guid', $vars, null);
 $guid = elgg_extract('guid', $vars, null);
 $comments_on = elgg_extract('comments_on', $vars, 'Yes');
 
+// sticky forms
+$headers = elgg_extract('headers', $vars);
+$data = elgg_extract('data', $vars);
+
 
 // If entity exists, we're editing existing
 if ($entity instanceof Rubric) {
@@ -42,21 +46,21 @@ $write_access_label		= elgg_echo('Write Access');
 $access_label 			= elgg_echo('access');
 
 if ($comments_on != 'No') {
-  	$comments_on_switch = "checked=\"checked\"";
+  	$comments_switch = "checked=\"checked\"";
 } else {
-	$comment_on_switch = "";
+	$comment_switch = "";
 }
 	
 $write_access_input	= elgg_view('input/access', array('name' => 'write_access_id', 'value' => $write_access_id));
 $access_input 		= elgg_view('input/access', array('name' => 'access_id', 'value' => $access_id));
 $submit_input 		= elgg_view('input/submit', array('name' => 'submit', 'value' => elgg_echo('publish')));
 $entity_hidden      = elgg_view('input/hidden', array('name' => 'guid', 'value' => $guid));
+$container          = elgg_view('input/hidden', array('name' => 'container_guid', 'value' => $container_guid));
 
 $publish 			= elgg_echo('publish');
-$privacy 			= elgg_echo('access');;
+$privacy 			= elgg_echo('access');
 $allowcomments 		= elgg_echo('rubrics:comments:allow');
   
-// Build rubric input form
 
 // num_rows is the number of trs / top level arrays
 $num_rows = count($contents);
@@ -110,7 +114,7 @@ for ($i = 0; $i < $num_rows; $i++) {
 // the add row control
 $rubric_input .= '<tr>';
 for ($i = 0; $i < $num_cols; $i++) {
-	$rubric_input .= '<td></td>';
+	$rubric_input .= '<td>&nbsp;</td>';
 }
 
 $icon = '<span class="mhm elgg-rubrics-icon elgg-rubrics-icon-plus"></span>';
@@ -147,7 +151,7 @@ $form_body = <<<HTML
 			$write_access_input
 		</p>
 		<p>
-			<label><input type="checkbox" name="rubric_comments_select"  {$comments_on_switch} /> {$allowcomments}</label>
+			<label><input type="checkbox" name="rubric_comments_select" $comments_switch />$allowcomments</label>
 		</p>
 
 		<p>

@@ -5,6 +5,9 @@
 
 $rubrics_url = basename(dirname(dirname(dirname(dirname(__FILE__)))));
 $rubrics_url = elgg_normalize_url("mod/$rubrics_url");
+$light_grey = '#f9f9f9';
+$dark_grey = '#f3f3f3';
+
 ?>
 
 .middle {
@@ -34,12 +37,18 @@ $rubrics_url = elgg_normalize_url("mod/$rubrics_url");
 	background-image: url("<?php echo "$rubrics_url/images/plus.gif"; ?>");
 }
 
-table.elgg-rubric textarea, table.elgg-rubric input {
+table.elgg-rubric {
+	width: 100%;
+}
+
+table.elgg-rubric textarea,
+table.elgg-rubric input,
+table.elgg-rubric p {
 	width: 100%;
 	font-family: Tahoma, sans-serif;
 	font-size: 90%;
 
-	border: 1px solid #dedede;
+	border: 1px solid <?php echo $light_grey; ?>;
 	border-radius: 5px;
 	-moz-border-radius:5px;
 	-webkit-border-radius: 5px;
@@ -50,11 +59,17 @@ table.elgg-rubric textarea:focus, table.elgg-rubric input:focus {
 	background-color: #E4ECF5;
 }
 
-table.elgg-rubric textarea {
+table.elgg-rubric textarea,
+table.elgg-rubric p {
 	height: 100px;
 }
 
-input.elgg-rubrics-header {
+table.elgg-rubric p.elgg-rubrics-header {
+	height: auto;
+}
+
+input.elgg-rubrics-header,
+p.elgg-rubrics-header {
 	font-weight: bold;
 	text-align: center;
 	background: #cacaca;
@@ -65,13 +80,41 @@ table.elgg-rubric td {
 	padding: 5px;
 }
 
-table.elgg-rubric tr:nth-child(odd) textarea {
-	background-color: #dedede;
+table.elgg-rubric tr:nth-child(odd) textarea,
+table.elgg-rubric tr:nth-child(odd) p {
+	background-color: <?php echo $dark_grey; ?>;
 }
+
+table.elgg-rubric tr:nth-child(even) textarea,
+table.elgg-rubric tr:nth-child(even) p {
+	background-color: <?php echo $light_grey; ?>;
+}
+
 
 table.elgg-rubric tr:nth-child(odd) textarea:focus {
 	background-color: #E4ECF5;
 }
+
+/* display overrides */
+
+
+table.elgg-rubric-display td {
+	padding: 1px;
+}
+
+table.elgg-rubric-display p {
+	border: 0;
+	border-radius: 0;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+}
+
+table.elgg-rubric-display p.elgg-rubrics-header {
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
 
 <?php
 return true;

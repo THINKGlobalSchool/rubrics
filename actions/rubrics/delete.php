@@ -10,32 +10,17 @@
  * 
  */
 
-// Get input data
-$guid = (int)get_input('rubric_guid');
-	
-// Make sure we actually have permission to edit
+$guid = (int)get_input('guid');
 $rubric = get_entity($guid);
 
-$user = get_entity(get_loggedin_userid());
-
-$can_delete = false;	
-if (($user->getGUID() == $rubric->owner_guid) || $user->isAdmin()) {
-	$can_delete = true;
+if (elgg_instanceof($rubric, 'object', 'rubric') && $rubric->canEdit()) {
+	if ($rubric->delete()) {
+		system_message(elgg_echo("rubrics:deleted"));
+	} else {
+		register_error(elgg_echo("rubrics:notdeleted"));
+	}
+} else {
+	register_error(elgg_echo('rubrics:errors:invalid_entity'));
 }
 
-if ($rubric->getSubtype() == "rubric" && $rubric->canEdit() && $can_delete) {
-	
-	// Delete it!
-	$rowsaffected = $rubric->delete();
-	
-	if ($rowsaffected > 0) {
-		// Success message
-		system_message(elgg_echo("rubricbuilder:deleted"));
-		
-	} else {
-		register_error(elgg_echo("rubricbuilder:notdeleted"));
-	}
-	
-	// Forward to the main blog page
-	forward("pg/rubric/");
-}	
+forward(REFERER);
