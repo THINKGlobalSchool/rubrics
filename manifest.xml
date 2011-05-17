@@ -1,13 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<plugin_manifest>
-	<field key="name" value="Rubrics" />
-    <field key="author" value="Jeff Tilson" />
-    <field key="version" value="SVN (Elgg 1.8 Compatibility)" />
-    <field key="description" value="Rubric Builder - Create and collaborate on social rubrics." />
-    <field key="website" value="http://www.thinkglobalschool.com" />
-    <field key="copyright" value="(C) THINK Global School 2009-2010" />
-    <field key="licence" value="GNU Public License version 2" />
-    <field key="elgg_version" value="2010111501" />    
-	<field key="elgg_install_state" value="enabled" />
-	<field key="admin_interface" value="simple" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<plugin_manifest xmlns="http://www.elgg.org/plugin_manifest/1.8">
+	<name>Rubric Builder</name>
+	<author>Jeff Tilson</author>
+	<version>SVN (Elgg 1.8 Compatibility)</version>
+	<description>Rubric Builder - Create and collaborate on social rubrics.</description>
+	<website>http://www.thinkglobalschool.com</website>
+	<copyright>(C) THINK Global School 2009-2010</copyright>
+	<licence>GNU Public License version 2</licence>
+
+	<activate_on_install>true</activate_on_install>
+	<admin_interface>simple</admin_interface>
+
+   	<requires>
+		<type>elgg_version</type>
+		<version>2010111501</version>
+	</requires>
 </plugin_manifest>

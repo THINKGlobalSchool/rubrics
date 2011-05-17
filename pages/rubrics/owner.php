@@ -1,6 +1,6 @@
 <?php
 /**
- * Rubric Index
+ * Rubric Index for single user
  * 
  * @package RubricBuilder
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
