@@ -39,6 +39,7 @@ $dark_grey = '#f3f3f3';
 
 table.elgg-rubric {
 	width: 100%;
+	table-layout: fixed;
 }
 
 table.elgg-rubric textarea,
@@ -78,10 +79,21 @@ p.elgg-rubrics-header {
 
 table.elgg-rubric td {
 	padding: 5px;
+	margin: 3px;
+}
+
+td.elgg-rubrics-control {
+	width: 30px;
 }
 
 table.elgg-rubric tr:nth-child(odd) textarea,
 table.elgg-rubric tr:nth-child(odd) p {
+	background-color: <?php echo $dark_grey; ?>;
+}
+
+/* ie doesn't support nth-child and freaks if we combine the rules. */
+table.elgg-rubric tr.elgg-rubrics-odd textarea,
+table.elgg-rubric tr.elgg-rubrics-odd p {
 	background-color: <?php echo $dark_grey; ?>;
 }
 
@@ -90,14 +102,18 @@ table.elgg-rubric tr:nth-child(even) p {
 	background-color: <?php echo $light_grey; ?>;
 }
 
+/* ie doesn't support nth-child and freaks if we combine the rules. */
+table.elgg-rubric tr.elgg-rubrics-even textarea,
+table.elgg-rubric tr.elgg-rubrics-even p {
+	background-color: <?php echo $light_grey; ?>;
+}
 
 table.elgg-rubric tr:nth-child(odd) textarea:focus {
 	background-color: #E4ECF5;
 }
 
+
 /* display overrides */
-
-
 table.elgg-rubric-display td {
 	padding: 1px;
 }

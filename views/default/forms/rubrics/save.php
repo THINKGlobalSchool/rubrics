@@ -100,12 +100,12 @@ for ($i = 0; $i < $num_rows; $i++) {
 		// if a header, add a new column button
 		$icon = '<span class="mhm elgg-rubrics-icon elgg-rubrics-icon-plus"></span>';
 		$link = '<a class="elgg-rubrics-add-column">' . $icon . '</a>';
-		$rubric_input .= "<td class=\"center top\">$link</td>";
+		$rubric_input .= "<td class=\"center top elgg-rubrics-control\">$link</td>";
 	} else {
 		// if a row, add a delete row button
 		$icon = '<span class="mhm elgg-rubrics-icon elgg-rubrics-icon-minus"></span>';
 		$link = '<a class="elgg-rubrics-remove-row">' . $icon . '</a>';
-		$rubric_input .= "<td class=\"center middle\">$link</td>";
+		$rubric_input .= "<td class=\"center middle elgg-rubrics-control\">$link</td>";
 	}
 
 	$rubric_input .= "</tr>";
@@ -151,7 +151,7 @@ $form_body = <<<HTML
 			$write_access_input
 		</p>
 		<p>
-			<label><input type="checkbox" name="rubric_comments_select" $comments_switch />$allowcomments</label>
+			<label><input type="checkbox" name="comments_on" $comments_switch />$allowcomments</label>
 		</p>
 
 		<p>

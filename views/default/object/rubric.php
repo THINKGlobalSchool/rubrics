@@ -111,11 +111,9 @@ if ($full) {
 	}
 
 
-	// display comments link?
-	if ($rubric->comments_on == 'Off') {
-		$comments_on = false;
-	} else {
-		$comments_on = true;
+	// comments
+	if ($rubric->comments_on != 'Off') {
+		$comments = elgg_view_comments($rubric);
 	}
 
 	// Build rubric table
@@ -130,7 +128,7 @@ if ($full) {
 					'value' => elgg_echo($contents[$i][$j])
 				));
 			} else {
-				$rubric_table .= "<td class=\"center middle\"><p>";
+				$rubric_table .= "<td class=\"middle\"><p>";
 		    	$rubric_table .=  elgg_view('output/text', array(
 					'value' => elgg_echo($contents[$i][$j])
 				));
@@ -161,6 +159,7 @@ $rubric_info
 <div class="elgg-content">
 	$body
 	$rubric_table
+	$comments
 </div>
 HTML;
 

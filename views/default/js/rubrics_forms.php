@@ -4,27 +4,27 @@
  */
 ?>
 //<script>
-elgg.provide('elgg.rubrics');
+elgg.provide('elgg.rubricForms');
 
 /**
  * Init the JS on the forms
  */
-elgg.rubrics.init = function() {
-	$('form .elgg-rubric .elgg-rubrics-add-row').live('click', elgg.rubrics.addRow);
-	$('form .elgg-rubric .elgg-rubrics-remove-row').live('click', elgg.rubrics.removeRow);
+elgg.rubricForms.init = function() {
+	$('form .elgg-rubric .elgg-rubrics-add-row').live('click', elgg.rubricForms.addRow);
+	$('form .elgg-rubric .elgg-rubrics-remove-row').live('click', elgg.rubricForms.removeRow);
 
-	$('form .elgg-rubric .elgg-rubrics-add-column').live('click', elgg.rubrics.addColumn);
-	$('form .elgg-rubric .elgg-rubrics-remove-column').live('click', elgg.rubrics.removeColumn);
+	$('form .elgg-rubric .elgg-rubrics-add-column').live('click', elgg.rubricForms.addColumn);
+	$('form .elgg-rubric .elgg-rubrics-remove-column').live('click', elgg.rubricForms.removeColumn);
 }
 
-elgg.rubrics.removeRow = function(e, el, a, b) {
+elgg.rubricForms.removeRow = function(e, el, a, b) {
 	console.log(e, el, a, b);
 }
 
 /**
  * Removes columns
  */
-elgg.rubrics.addColumn = function(e) {
+elgg.rubricForms.addColumn = function(e) {
 	var $this = $(this);
 	var $table = $this.parents('table');
 
@@ -43,9 +43,9 @@ elgg.rubrics.addColumn = function(e) {
 /**
  * Removes a column
  */
-elgg.rubrics.removeColumn = function(e) {
+elgg.rubricForms.removeColumn = function(e) {
 	var $td = $(this).parents('td');
-	var index = elgg.rubrics.findTableIndex($td);
+	var index = elgg.rubricForms.findTableIndex($td);
 	var $table = $td.parents('table');
 	var tdCount = $td.parent('tr').find('td').length;
 
@@ -63,7 +63,7 @@ elgg.rubrics.removeColumn = function(e) {
 /**
  * Removes a row
  */
-elgg.rubrics.removeRow = function(e) {
+elgg.rubricForms.removeRow = function(e) {
 	var $this = $(this);
 	var $table = $(this).parents('table');
 	var trCount = $table.find('tr').length;
@@ -81,7 +81,7 @@ elgg.rubrics.removeRow = function(e) {
 /**
  * Adds a row
  */
-elgg.rubrics.addRow = function(e) {
+elgg.rubricForms.addRow = function(e) {
 	$this = $(this);
 	$tr = $this.parents('tr').prev('tr');
 
@@ -96,7 +96,7 @@ elgg.rubrics.addRow = function(e) {
  *
  * Yoinked from: http://stackoverflow.com/questions/1166452/
  */
-elgg.rubrics.findTableIndex = function(td) {
+elgg.rubricForms.findTableIndex = function(td) {
 	$td = td;
 	
 	if (!$td.is('td') && !$td.is('th')) {
@@ -120,4 +120,4 @@ elgg.rubrics.findTableIndex = function(td) {
 	return nonColSpanIndex;
 }
 
-elgg.register_hook_handler('init', 'system', elgg.rubrics.init);
+elgg.register_hook_handler('init', 'system', elgg.rubricForms.init);

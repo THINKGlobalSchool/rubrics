@@ -39,6 +39,11 @@
  *	Anything extending rubric/options should now extend the entity menu for rubric entities. (See
  *	how the fork menu is added.)
  *	Need a fork icon
+ *	Fork action
+ *	Better CSS padding
+ *	Weird spaces in css in IE.
+ *	Revision link on entity
+ *	History page
  */
 
 elgg_register_event_handler('init', 'system', 'rubrics_init');
