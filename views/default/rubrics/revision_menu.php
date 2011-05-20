@@ -14,25 +14,10 @@
  * @uses $vars['current_local_revision'] - Current local revision from above
  */
 
-$rubric_guid = $vars['rubric_guid'];
+$rubric_guid = elgg_extract('rubric_guid', $vars);
 
 $rubric = get_entity($rubric_guid);
 $user = get_entity($rubric->owner_guid);
-
-$script = "<script type='text/javascript'>
-				$(document).ready(function() {
-					// Set dropdown to current revision
-					var current_revision = $('input#current_revision').val();
-
-					$('#rev').attr('value', current_revision);
-						
-					// Submit form on change event
-					$('#revselect').change(function() {
-					    this.submit();
-					});
-				});			
-			</script>";
-
 $revisions_local = $vars['local_revisions'];
 $current_revision = $vars['current_local_revision'];
 
@@ -44,7 +29,10 @@ arsort($revisions_pulldown);
 
 $counter = 0;
 foreach ($revisions_pulldown as $key => $value) {
-	if ($counter == 1) break;
+	if ($counter == 1) {
+		break;
+	}
+	
 	$revisions_pulldown[$key] = $value . " (Latest)";
 	$counter++;
 }
@@ -55,18 +43,22 @@ $previous_button = "";
 $next_button = "";
 if ($current_revision > 1) {
 	$prev = $flipped_revisions[$current_revision - 1];
-	$previous_button = "<form action={$CONFIG->url}pg/rubric/{$user->username}/view/$rubric_guid/?rev=$prev'>
-							<input type='submit' style='width: 92px;' value='<< Previous' />
-							<input type='hidden' name='rev' value='$prev' />
-						</form>";
+	$url = elgg_http_add_url_query_elements($rubric->getURL(), array('rev' => $prev));
+	$previous_button = elgg_view('output/url', array(
+		'text' => elgg_echo('rubrics:previous'),
+		'href' => $url,
+		'class' => 'elgg-button-action'
+	));
 }  
 
 if ($current_revision < $count){
 	$next = $flipped_revisions[$current_revision + 1];
-	$next_button = "<form action={$CONFIG->url}pg/rubric/{$user->username}/view/$rubric_guid/>
-						<input type='submit' style='width: 92px;' value='Next >>' />
-						<input type='hidden' name='rev' value='$next' />
-					</form>";
+	$url = elgg_http_add_url_query_elements($rubric->getURL(), array('rev' => $next));
+	$previous_button = elgg_view('output/url', array(
+		'text' => elgg_echo('rubrics:next'),
+		'href' => $url,
+		'class' => 'elgg-button-action'
+	));
 }
 
 if ($current_revision != $count) {
