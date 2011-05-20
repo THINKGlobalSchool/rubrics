@@ -17,10 +17,6 @@ elgg.rubricForms.init = function() {
 	$('form .elgg-rubric .elgg-rubrics-remove-column').live('click', elgg.rubricForms.removeColumn);
 }
 
-elgg.rubricForms.removeRow = function(e, el, a, b) {
-	console.log(e, el, a, b);
-}
-
 /**
  * Removes columns
  */

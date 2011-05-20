@@ -64,6 +64,7 @@ $english = array(
 	'rubrics:viewingrevision' => 'Viewing Revision: ',
 	'rubrics:revisionauthor' => 'Revision Author',
 	'rubrics:revisioncreatedby' => 'Revision created %s by %s',
+	'rubrics:forked_title' => "Copy of %s",
 	
 	// River terms
 	'rubrics:river:created' => '%s created',
@@ -83,6 +84,9 @@ $english = array(
 	
 	// Other
 	'rubrics:comments:allow' => 'Allow Comments',
+	'rubrics:previous' => '<< Previous',
+	'rubrics:next' => 'Next >>',
+
 
 );
 

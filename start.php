@@ -44,6 +44,7 @@
  *	Weird spaces in css in IE.
  *	Revision link on entity
  *	History page
+ *	Language strings
  */
 
 elgg_register_event_handler('init', 'system', 'rubrics_init');
@@ -57,9 +58,6 @@ function rubrics_init() {
 	// js for forms is only needed on those pages.
 	$url = elgg_get_simplecache_url('js', 'rubrics_forms');
 	elgg_register_js('rubrics:forms', $url);
-
-//	$url = '/mod/rubric/js/jquery.table2json.js';
-//	elgg_register_js('rubrics:jquery', $url);
 
 	// js for viewing.
 	elgg_extend_view('js/elgg', 'js/rubrics');
@@ -90,7 +88,7 @@ function rubrics_init() {
 	elgg_register_action('rubrics/delete', "$actions_root/delete.php");
 	elgg_register_action('rubrics/fork', "$actions_root/fork.php");
 	elgg_register_action('rubrics/restore', "$actions_root/restore.php");
-			
+
 	// Add widget 
 	add_widget_type('rubric', elgg_echo('rubrics'), elgg_echo('rubrics:widget:description'));
 	
@@ -202,7 +200,7 @@ function rubrics_page_handler($page) {
 		switch ($action) {
 			case 'history':
 				if ($page2) {
-					set_input('rubric_guid', $page2);
+					set_input('guid', $page2);
 					add_submenu_item(elgg_echo('rubrics:label:view'), $CONFIG->url . "pg/rubric/{$user->username}/view/{$page2}", 'rubriclinks');
 					include $CONFIG->pluginspath . 'rubrics/pages/history.php';
 				}
@@ -400,65 +398,18 @@ function rubrics_prepare_form_vars($entity = null, $revision_id = null) {
 function rubrics_add_fork_menu_item($hook, $type, $return, $options) {
 	$entity = elgg_extract('entity', $options);
 	if (elgg_instanceof($entity, 'object', 'rubric')) {
-//		$text = '<span class="elgg-rubrics-icon elgg-rubrics-icon-fork"></span>';
-		$text = elgg_echo('fork');
+		$text = elgg_echo('rubrics:fork');
 		$url = "action/rubrics/fork";
 		$url = elgg_http_add_url_query_elements($url, array('guid' => $entity->getGUID()));
-		$item = new ElggMenuItem('fork', $text, $url);
+		$url = elgg_add_action_tokens_to_url($url);
+		$item = ElggMenuItem::factory(array(
+			'href' => $url,
+			'name' => 'fork',
+			'text' => $text,
+			'link_class' => 'elgg-requires-confirmation'
+		));
+
 		$return[] = $item;
 		return $return;
-	}
-}
-
-
-/**
- * Returns size information and content for a rubric keeping the legacy system compatible
- *
- * A rubric like:
- * +----+----+----+
- * | h1 | h2 | h3 |
- * +----+----+----+
- * | A1 | A2 | A3 |
- * +----+----+----+
- * | B1 | B2 | B3 |
- * +----+----+----+
- *
- * Returns data like:
- * array(
- *	'columns' => 3, // just a count of the headers
- *	'rows'    => 2, // just count(data) / count(headers)
- *	'headers' => array('h1', 'h2', 'h3')
- *	'data'    => array(array('A1', 'A2', 'A3'), array('B1', 'B2', 'B3'))
- * )
- *
- * @param object $rubric A rubric object, a revision annotation, or an object with similar structure.
- * @return array In the form array(
- *	'columns' => (int)   Number of columns (not including controls row)
- *	'rows'    => (int)   Number of rows (not including header or controls rows)
- *  'headers' => (array) The headers
- *  'data'    => (array) The data of the rubric
- */
-function rubrics_get_rubric_dimenion($rubric) {
-	// check for annotations
-	if ($rubric instanceof ElggAnnotation) {
-		$info = unserialize($rubric->value);
-		// check legacy
-		if (isset($info['rows'])) {
-			$contents = unserialize($info['contents']);
-			$headers = array_shift($contents);
-			$data = $contents;
-			$columns = $info['cols'];
-			$rows = $info['rows'];
-		} else {
-			$data = $info['data'];
-			$headers = $info['headers'];
-			$columns = count($headers);
-			$rows = ceil(count($data) / count($headers));
-		}
-	} else {
-		// check legacy
-		if (isset($rubric->num_cols)) {
-			$contents = unserialize($rubric->contents);
-		}
 	}
 }

@@ -13,7 +13,7 @@
 
 $full = elgg_extract('full_view', $vars, false);
 $rubric = elgg_extract('entity', $vars, false);
-$revision = elgg_extract('revision', $vars, false);
+$rev = elgg_extract('rev', $vars, false);
 
 if (!$rubric) {
 	return true;
@@ -68,12 +68,7 @@ if ($full) {
 	// Build an array of 'local' revisions
 	// ie: map the annotation id to a local number
 	// annotations 87, 88, 89, 92, 98 becomes 1, 2, 3, 4, 5
-	$revisions = elgg_get_annotations(array(
-		'type' => 'object',
-		'subtype' => 'rubric',
-		'annotation_name' => 'rubric',
-		'limit' => 0
-	));
+	$revisions = $rubric->getAnnotations('rubric', 0);
 
 	$count = count($revisions);
 	$revisions_local = array();
@@ -82,8 +77,8 @@ if ($full) {
 		$revisions_local[$revisions[$i]->id] = $i + 1;
 	}
 
-	if ($revision) {
-		$revision = get_annotation($rev);
+	if ($rev) {
+		$revision = elgg_get_annotation_from_id($rev);
 		
 		// Make sure we have an annotation object, and that it belongs to this rubric
 		if ($revision && $revision->entity_guid == $rubric->getGUID()) {
@@ -95,7 +90,7 @@ if ($full) {
 			$num_rows    = $revision['rows'];
 			$num_cols    = $revision['cols'];
 
-			$current_revision = $revisions_local[$rev];
+			$current_revision = $revisions_local[$revision_id];
 
 		} else {
 			// Something funny is going on...
@@ -110,6 +105,12 @@ if ($full) {
 		$current_revision = $count;
 	}
 
+	$revisions_output = elgg_view('rubrics/revision_menu', array(
+		'revision_id' => $revision_id,
+		'rubric_guid' => $rubric->getGUID(), 
+		'local_revisions' => $revisions_local, 
+		'current_local_revision' => $current_revision
+	));
 
 	// comments
 	if ($rubric->comments_on != 'Off') {
@@ -156,6 +157,7 @@ if ($full) {
 	echo <<<HTML
 $header
 $rubric_info
+$revisions_output
 <div class="elgg-content">
 	$body
 	$rubric_table
@@ -288,7 +290,7 @@ if (isset($rubric) && $rubric instanceof Rubric) {
 	$user_icon = elgg_view("profile/icon",array('entity' => $owner, 'size' => 'tiny'));
 	$tags_output = elgg_view('output/tags', array('tags' => $rubric->tags));
 	$description_output = elgg_view('output/longtext',array('value' => $description));
-	$revisions_output = elgg_view('rubricbuilder/revisionmenu', array('rev_guid' => $rev, 'rubric_guid' => $rubric->getGUID(), 'local_revisions' => $revisions_local, 'current_local_revision' => $current_revision));
+	$revisions_output = elgg_view('rubrics/revisionmenu', array('rev_guid' => $rev, 'rubric_guid' => $rubric->getGUID(), 'local_revisions' => $revisions_local, 'current_local_revision' => $current_revision));
 	
 	$date = friendly_time($rubric->time_created);
 
@@ -311,8 +313,8 @@ if (isset($rubric) && $rubric instanceof Rubric) {
 		
 		$options .= "<span class='entity_edit'>" . elgg_view("output/confirmlink", array(
 					'href' => $vars['url'] . "action/rubric/fork?rubric_guid=" . $rubric->getGUID(),
-					'text' => elgg_echo('rubricbuilder:fork'),
-					'confirm' => elgg_echo('rubricbuilder:forkconfirm'),
+					'text' => elgg_echo('rubrics:fork'),
+					'confirm' => elgg_echo('rubrics:forkconfirm'),
 					)) . "</span>";
 			
 		if ($canedit && $can_delete) {

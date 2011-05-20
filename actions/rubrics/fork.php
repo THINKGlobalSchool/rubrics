@@ -10,43 +10,23 @@
  * 
  */
 
-// Get input data
-$guid = (int)get_input('rubric_guid');
-	
-// Make sure we actually have permission to edit
+$guid = (int)get_input('guid');
 $rubric = get_entity($guid);
+$user_guid = elgg_get_logged_in_user_guid();
 
-$user = get_entity(get_loggedin_userid());
-	
-/** For now anyone can duplicate a rubric **/
-//if ($rubric->getSubtype() == "rubric" && $rubric->canEdit()) {
-	
-	$new_rubric = new Rubric();
-	$new_rubric->contents			= $rubric->contents;
-	$new_rubric->title 				= "Copy of " . $rubric->title;
-	$new_rubric->description 		= $rubric->description;
-	$new_rubric->owner_guid			= get_loggedin_userid();
-	$new_rubric->container_guid 	= (int)get_input($rubric->container_guid, get_loggedin_userid());
-	$new_rubric->access_id			= $rubric->access_id;
-	$new_rubric->write_access_id	= $rubric->write_access_id;
-	$new_rubric->tags 				= $rubric->tags;
-	$new_rubric->comments_on		= $rubric->comments_on;
-	$new_rubric->num_rows 			= $rubric->num_rows;
-	$new_rubric->num_cols			= $rubric->num_cols;
+if (!elgg_instanceof($rubric, 'object', 'rubric')) {
+	register_error(elgg_echo("rubrics:cannot_fork"));
+	forward(REFERER);
+}
 
-	if (!$new_rubric->save()) {
-		register_error(elgg_echo("rubricbuilder:error"));		
-		forward($_SERVER['HTTP_REFERER']);
-	}
+$new_rubric                 = clone $rubric;
+$new_rubric->title          = elgg_echo('rubrics:forked_title', array($rubric->title));
+$new_rubric->owner_guid     = $user_guid;
+$new_rubric->container_guid = (int)get_input($rubric->container_guid, $user_guid);
 
-	
-	// Nuke the cached data in case we're coming from the edit page
-	remove_metadata($_SESSION['user']->guid,'rubrictitle');
-	remove_metadata($_SESSION['user']->guid,'rubricdescription');
-	remove_metadata($_SESSION['user']->guid,'rubrictags');
-	remove_metadata($_SESSION['user']->guid,'rubriccontents');
-	remove_metadata($_SESSION['user']->guid,'rubriccached');
-	
-	// Forward to the main blog page
-	forward("pg/rubric/{$user->username}/edit/" . $new_rubric->getGUID());
-//}	
+if (!$new_rubric->save()) {
+	register_error(elgg_echo("rubrics:cannot_fork2"));
+	forward($_SERVER['HTTP_REFERER']);
+}
+
+forward($new_rubric->getURL());

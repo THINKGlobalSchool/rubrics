@@ -106,7 +106,9 @@ add_to_river($river_view, $river_action, elgg_get_logged_in_user_guid(), $rubric
 $revision = array(
 	"contents" => $rubric->contents,
 	"title" => $rubric->title,
-	"description" => $rubric->description
+	"description" => $rubric->description,
+	'cols' => $cols,
+	'rows' => count($content)
 );
 
 // Annotate for revision history
