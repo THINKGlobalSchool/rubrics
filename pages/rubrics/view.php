@@ -14,7 +14,9 @@ $guid = get_input('guid');
 $rubric = get_entity($guid);
 $rev_id = get_input('rev_id', null);
 
-if (!elgg_instanceof($rubric, 'object', 'rubric')) {
+$rubric_info = rubrics_get_rubric_info($rubric, $rev_id);
+
+if (!elgg_instanceof($rubric, 'object', 'rubric') || !$rubric_info) {
 	$content = elgg_echo('rubrics:not_found');
 } else {
 	$page_owner = elgg_get_page_owner_entity();
@@ -26,11 +28,12 @@ if (!elgg_instanceof($rubric, 'object', 'rubric')) {
 		elgg_push_breadcrumb($crumbs_title, "rubrics/owner/$page_owner->username");
 	}
 
-	$title = $rubric->title;
+	$title = $rubric_info['title'];
 	elgg_push_breadcrumb($title);
 	$content = elgg_view_entity($rubric, array(
 		'full_view' => true,
-		'rev_id' => $rev_id
+		'rev_id' => $rev_id,
+		'rubric_info' => $rubric_info
 	));
 }
 

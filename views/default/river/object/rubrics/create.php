@@ -10,20 +10,33 @@
  * 
  */
 
-$performed_by = get_entity($vars['item']->subject_guid); // $statement->getSubject();
-$object = get_entity($vars['item']->object_guid);
-$url = $object->getURL();
 
-$url = "<a href=\"{$performed_by->getURL()}\">{$performed_by->name}</a>";
-$contents = strip_tags($object->description); //strip tags from the contents to stop large images etc blowing out the river view
-$string = sprintf(elgg_echo("rubricbuilder:river:created"),$url) . " ";
-$string .= elgg_echo("rubricbuilder:river:create") . " <a href=\"" . $object->getURL() . "\">" . $object->title . "</a>";
-$string .= "<div class=\"river_content_display\">";
-if(strlen($contents) > 200) {
-       	$string .= substr($contents, 0, strpos($contents, ' ', 200)) . "...";
-   }else{
-    $string .= $contents;
-   }
-$string .= "</div>";
+$object = $vars['item']->getObjectEntity();
+$excerpt = elgg_get_excerpt($excerpt);
 
-echo $string;
+$params = array(
+	'href' => $object->getURL(),
+	'text' => $object->title,
+);
+$link = elgg_view('output/url', $params);
+
+$group_string = '';
+$container = $object->getContainerEntity();
+if ($container instanceof ElggGroup) {
+	$params = array(
+		'href' => $container->getURL(),
+		'text' => $container->name,
+	);
+	$group_link = elgg_view('output/url', $params);
+	$group_string = elgg_echo('river:ingroup', array($group_link));
+}
+
+echo elgg_echo('rubrics:river:create');
+
+echo " $link $group_string";
+
+if ($excerpt) {
+	echo '<div class="elgg-river-content">';
+	echo $excerpt;
+	echo '</div>';
+}

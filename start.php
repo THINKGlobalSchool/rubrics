@@ -29,8 +29,6 @@
  *
  *
  * @todo
- *	delete views/default/rubrics/profile_link.php
- *	delete metatags view
  *	work out sticky forms for column info.
  *
  *	deprecate the river view using the old rubricbuilder name
@@ -41,9 +39,7 @@
  *	Need a fork icon
  *	Better CSS padding
  *	Weird spaces in css in IE.
- *	Revision link on entity
  *	History page
- *	Language strings
  */
 
 elgg_register_event_handler('init', 'system', 'rubrics_init');
@@ -345,4 +341,55 @@ function rubrics_add_fork_menu_item($hook, $type, $return, $options) {
 		$return[] = $item;
 		return $return;
 	}
+}
+
+/**
+ * Returns information about a rubric taking into consideration any revisions requested.
+ *
+ * @param mixed $rubric The Rubric object or a guid
+ * @param mixed $rev_id The revision ElggAnnotation object or an annotation id
+ *
+ * @return array An array of the rubric's info.
+ */
+function rubrics_get_rubric_info($rubric, $revision = null) {
+	if (is_numeric($rubric)) {
+		$rubric = get_entity($rubric);
+	}
+
+	if (!elgg_instanceof($rubric, 'object', 'rubric')) {
+		return false;
+	}
+
+	$info = array(
+		'rubric' => $rubric
+	);
+
+	if (!$revision) {
+		$info['title']       = $rubric->title;
+		$info['description'] = $rubric->description;
+		$info['contents']    = unserialize($rubric->contents);
+		$info['num_rows']    = $rubric->num_rows;
+		$info['num_cols']    = $rubric->num_cols;
+		$info['revison']     = null;
+	} else {
+		if (is_numeric($revision)) {
+			$revision = elgg_get_annotation_from_id($revision);
+		}
+
+		// Make sure we have an annotation object, and that it belongs to this rubric
+		if (!$revision instanceof ElggAnnotation && $revision->entity_guid == $rubric->getGUID()) {
+			return false;
+		}
+
+		$revision_info = unserialize($revision->value);
+
+		$info['title']       = $revision_info['title'];
+		$info['description'] = $revision_info['description'];
+		$info['contents']    = unserialize($revision_info['contents']);
+		$info['num_rows']    = $revision_info['rows'];
+		$info['num_cols']    = $revision_info['cols'];
+		$info['revision']    = $revision;
+	}
+
+	return $info;
 }

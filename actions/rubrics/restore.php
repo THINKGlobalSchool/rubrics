@@ -10,50 +10,39 @@
  * 
  */
 
-
 // Get input data
-$guid = (int)get_input('rubric_guid');
-$rev = (int)get_input('rev');
+$guid = (int)get_input('guid');
+$rev_id = (int)get_input('rev_id');
+$revision = elgg_get_annotation_from_id($rev_id);
+$rubric = get_entity($guid);
+$rubric_info = rubrics_get_rubric_info($rubric, $revision);
 
-if ($rev) {	
-	$revision = get_annotation($rev);
-	// Make sure we have an annotation object, and that it belongs to this rubric
-	if ($revision && $revision->entity_guid == $guid) {
-		$revision = unserialize($revision->value);
-
-		$title 			= $revision['title'];
-		$description 	= $revision['description'];
-		$contents		= $revision['contents'];
-		$num_rows		= $revision['rows'];
-		$num_cols		= $revision['cols'];
-		
-	} else {
-		// Something funny is going on...
-		forward();
-	}	
-	
-	// Make sure we actually have permission to edit
-	$rubric = get_entity($guid);				
+$is_rubric = (elgg_instanceof($rubric, 'object', 'rubric') && $rubric->canEdit());
+$is_revision = ($revision instanceof ElggAnnotation && $revision->entity_guid == $guid);
+if ($rubric_info && $is_rubric && $is_revision) {
+	$rubric->title       = $rubric_info['title'];
+	$rubric->description = $rubric_info['description'];
+	$rubric->contents    = serialize($rubric_info['contents']);
+	$rubric->num_rows    = $rubric_info['num_rows'];
+	$rubric->num_cols    = $rubric_info['num_cols'];
 			
-	$revision = array("contents" => $contents, "title" => $title, "description" => $description, "rows" => $num_rows, "cols" => $num_cols);
+	$revision = array(
+		"title" => $rubric_info['title'],
+		"description" => $rubric_info['description'],
+		"contents" => serialize($rubric_info['contents']),
+		"rows" => $rubric_info['num_rows'],
+		"cols" => $rubric_info['num_cols']
+	);
 
-	// Annotate for revision history
-	$rubric->annotate('rubric', serialize($revision), $rubric->access_id);	
-
-	// Success message
-	system_message(elgg_echo("rubricbuilder:restored"));		
-
-	// Nuke the cached data in case we're coming from the edit page
-	remove_metadata($_SESSION['user']->guid,'rubrictitle');
-	remove_metadata($_SESSION['user']->guid,'rubricdescription');
-	remove_metadata($_SESSION['user']->guid,'rubrictags');
-	remove_metadata($_SESSION['user']->guid,'rubriccontents');
-	remove_metadata($_SESSION['user']->guid,'rubriccached');
-
-	$user = get_entity($rubric->owner_guid);
-
-	// Forward to the main blog page
-	forward("pg/rubric/{$user->username}/view/" . $guid);
+	if ($rubric->save()) {
+		// Annotate for revision history
+		$rubric->annotate('rubric', serialize($revision), $rubric->access_id);
+		system_message(elgg_echo("rubrics:restored"));
+	} else {
+		register_error(elgg_echo("rubrics:error"));
+	}
+	forward($rubric->getURL());
 } else {
-	register_error(elgg_echo("rubricbuilder:error"));
+	register_error(elgg_echo("rubrics:error"));
+	forward(REFERER);
 }

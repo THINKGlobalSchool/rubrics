@@ -64,10 +64,10 @@ if ($current_local_revision < $count){
 }
 
 if ($current_local_revision != $count) {
-	$url = 'action/rubric/restore';
+	$url = 'action/rubrics/restore';
 	$url = elgg_http_add_url_query_elements($url, array(
 		'guid' => $rubric_guid,
-		'rev' => $revision->id
+		'rev_id' => $revision->id
 	));
 	
 	$restore_link = elgg_view("output/confirmlink", array(

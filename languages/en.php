@@ -45,11 +45,11 @@ $english = array(
 	'rubrics:restored' => 'Rubric successfully restored',
 
 	// Confirmations
-	'rubrics:forkconfirm' => 'Are you sure you want to duplicate this rubric?',
-	'rubrics:restoreconfirm' => 'Are you sure you want to restore this rubric?',
+	'rubrics:fork_confirm' => 'Are you sure you want to duplicate this rubric?',
+	'rubrics:restore_confirm' => 'Are you sure you want to restore this rubric?',
 	
 	// Errors
-	'rubrics:notdeleted' => 'There was an error deleting the rubric',
+	'rubrics:not_deleted' => 'There was an error deleting the rubric',
 	'rubrics:error' => 'There was an error saving the rubric',
 	'rubrics:blank' => 'Rubric title cannot be blank',
 	'rubrics:failure'	=> 'Your action failed',
@@ -67,15 +67,10 @@ $english = array(
 	'rubrics:forked_title' => "Copy of %s",
 	
 	// River terms
-	'rubrics:river:created' => '%s created',
-	'rubrics:river:updated' => '%s updated',
+	'rubrics:river:create' => 'published a new rubric',
+	'rubrics:river:update' => 'updated a rubric',
 	'rubrics:river:posted' => '%s posted',
-
-	// River links
-	'rubrics:river:create' => 'a new rubric titled',
-	'rubrics:river:update' => 'a rubric titled',
-	'rubrics:river:annotate' => 'a comment on a rubric titled',
-	'rubric:river:annotate' => 'a comment on a rubric titled',
+	'river:commented:object:rubric' => 'Rubric',
 	
 	// Widget
 	'rubrics:num' => 'Number of rubrics to display',
@@ -86,8 +81,6 @@ $english = array(
 	'rubrics:comments:allow' => 'Allow Comments',
 	'rubrics:previous' => '<< Previous',
 	'rubrics:next' => 'Next >>',
-
-
 );
 
 add_translation('en', $english);

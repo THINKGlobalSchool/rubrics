@@ -14,18 +14,22 @@
 $full = elgg_extract('full_view', $vars, false);
 $rubric = elgg_extract('entity', $vars, false);
 $rev_id = elgg_extract('rev_id', $vars, false);
+$rubric_info = elgg_extract('rubric_info', $vars, array());
 
 if (!$rubric) {
 	return true;
 }
 
+// put all the array keys into local scope as vars
+extract($rubric_info);
+
 $owner = $rubric->getOwnerEntity();
 $container = $rubric->getContainerEntity();
 $categories = elgg_view('output/categories', $vars);
-$excerpt = elgg_get_excerpt($rubric->description);
+$excerpt = elgg_get_excerpt($rubric_info['description']);
 
 $body = elgg_view('output/longtext', array(
-	'value' => $rubric->description,
+	'value' => $rubric_info['description'],
 	'class' => 'pbl'
 ));
 
@@ -81,30 +85,8 @@ if ($full) {
 	}
 
 	if ($rev_id) {
-		$revision = elgg_get_annotation_from_id($rev_id);
-		
-		// Make sure we have an annotation object, and that it belongs to this rubric
-		if ($revision && $revision->entity_guid == $rubric->getGUID()) {
-			$info = unserialize($revision->value);
-
-			$title       = $info['title'];
-			$description = $info['description'];
-			$contents    = unserialize($info['contents']);
-			$num_rows    = $info['rows'];
-			$num_cols    = $info['cols'];
-
-			$current_revision = $local_revisions[$rev_id];
-
-		} else {
-			// Something funny is going on...
-			forward();
-		}
+		$current_revision = $local_revisions[$rev_id];
 	} else {
-		$title 			  = $rubric->title;
-		$description 	  = $rubric->description;
-		$contents		  = $rubric->getContents();
-		$num_rows		  = $rubric->getNumRows();
-		$num_cols		  = $rubric->getNumCols();
 		$current_revision = $count;
 	}
 	
@@ -144,11 +126,11 @@ if ($full) {
 	}
 	$rubric_table .= "</table>";
 
-	$header = elgg_view_title($rubric->title);
+	$header = elgg_view_title($rubric_info['title']);
 
 	$params = array(
 		'entity' => $rubric,
-		'title' => $rubric->title,
+		'title' => $rubric_info['title'],
 		'metadata' => $metadata,
 		'subtitle' => $subtitle,
 		'tags' => $tags,
@@ -181,187 +163,4 @@ HTML;
 	$list_body = elgg_view('page/components/summary', $params);
 
 	echo elgg_view_image_block($rubric_icon, $list_body);
-}
-
-
-
-
-
-return true;
-
-
-
-
-
-
-
-
-if (isset($rubric) && $rubric instanceof Rubric) {
-	$url 		= $rubric->getURL();
-	$owner 		= $rubric->getOwnerEntity();
-	$canedit 	= $rubric->canEdit();
-	$rubric 	= $rubric;
-	
-	
-
-	$count = count($revisions);	
-
-	// Build an array of 'local' revisions
-	// ie: map the annotation id to a local number
-	// annotations 87, 88, 89, 92, 98 becomes 1, 2, 3, 4, 5
-	$local_revisions = array();
-
-	for ($i = 0; $i < $count; $i++) {
-		$local_revisions[$revisions[$i]->id] = $i + 1;
-	}
-		
-	//	$current_revision = $count;
-	
-	// If we're looking at a revision, grab the content for that
-	$rev = (int)get_input('rev',0);
-	if ($rev) {
-		
-		$revision = get_annotation($rev);
-		// Make sure we have an annotation object, and that it belongs to this rubric
-		if ($revision && $revision->entity_guid == $rubric->getGUID()) {
-			$revision = unserialize($revision->value);
-
-			$title 			= $revision['title'];
-			$description 	= $revision['description'];
-			$contents		= unserialize($revision['contents']);
-			$num_rows		= $revision['rows'];
-			$num_cols		= $revision['cols'];
-			
-			$current_revision = $local_revisions[$rev];
-			
-			if ($current_revision == $count)
-				$current_revision = $count;
-			
-		} else {
-			// Something funny is going on...
-			forward();
-		}
-	} else {
-		$title 			= $rubric->title;
-		$description 	= $rubric->description;
-		$contents		= $rubric->getContents();
-		$num_rows		= $rubric->getNumRows();
-		$num_cols		= $rubric->getNumCols();
-		$current_revision = $count;			
-	}
-
-	// display comments link?
-	if ($rubric->comments_on == 'Off') {
-		$comments_on = false;
-	} else {
-		$comments_on = true;
-	}
-	
-	// Are we allowed to delete?
-	$can_delete = false;
-	if (($vars['user']->getGUID() == $rubric->owner_guid) || $vars['user']->isAdmin()) {
-		$can_delete = true;
-	}
-	
-	// Build rubric table
-	$rubric_table = "<table class='rubric-table' cellpadding='10px' cellspacing='10px'>";
-	for ($i = 0; $i < $num_rows; $i++) {
-		$rubric_table .= "<tr>";
-		for ($j = 0; $j < $num_cols; $j++) {
-
-			$input_class = 'rubric-cell';
-
-			// Zebra stripes
-			if ($i % 2 == 0 && $i != 0)
-				$input_class .= " alt";
-
-			if ($i == 0) {
-				$rubric_table .= "<td style='height: 15px;' class='$input_class rubric-header'><p>";
-				$rubric_table .= elgg_view('output/text', array('internalname' => $i . '|' . $j, 'value' => elgg_echo($contents[$i][$j])));
-			} else {
-				$rubric_table .= "<td class='$input_class'><p>";
-		    	$rubric_table .=  elgg_view('output/text', array('internalname' => $i . '|' . $j, 'value' => elgg_echo($contents[$i][$j])));
-			}
-
-			$rubric_table .= "&nbsp;</p></td>";
-		}
-		$rubric_table .= "</tr>";
-	} 
-	$rubric_table .= "</table><br />";
-	
-	// Views/Content
-	$user_icon = elgg_view("profile/icon",array('entity' => $owner, 'size' => 'tiny'));
-	$tags_output = elgg_view('output/tags', array('tags' => $rubric->tags));
-	$description_output = elgg_view('output/longtext',array('value' => $description));
-	$revisions_output = elgg_view('rubrics/revisionmenu', array('rev_guid' => $rev, 'rubric_guid' => $rubric->getGUID(), 'local_revisions' => $local_revisions, 'current_local_revision' => $current_revision));
-	
-	$date = friendly_time($rubric->time_created);
-
-	// If comments on build link
-	if ($rubric->comments_on != 'Off') {
-		$comments_count = elgg_count_comments($rubric);
-		$comments_link = "<a href=\"{$rubric->getURL()}#annotations\">" . sprintf(elgg_echo("comments"), $comments_count) . '</a>';
-	} else {
-		$comments_link = '';
-	}
-
-	// Options menu
-	$options = "";
-	// Only show editing options if we're not viewing a revision
-	if (!$rev || $current_revision == $count) {
-		if ($canedit) {
-			$revision = $rev ? "?rev=$rev"  : "";
-			$options .= "<span class='entity_edit'><a href={$vars['url']}pg/rubric/{$vars['user']->username}/edit/{$rubric->getGUID()}$revision>" . elgg_echo("edit") . "</a></span>";
-		} 
-		
-		$options .= "<span class='entity_edit'>" . elgg_view("output/confirmlink", array(
-					'href' => $vars['url'] . "action/rubric/fork?rubric_guid=" . $rubric->getGUID(),
-					'text' => elgg_echo('rubrics:fork'),
-					'confirm' => elgg_echo('rubrics:forkconfirm'),
-					)) . "</span>";
-			
-		if ($canedit && $can_delete) {
-			if ($can_delete) {								
-				$delete_url = "{$vars['url']}action/rubric/delete?rubric_guid={$rubric->getGUID()}";
-				$delete_link = "<span class='delete_button'>" . elgg_view('output/confirmlink', array(
-					'href' => $delete_url,
-					'text' => elgg_echo('delete'),
-					'confirm' => elgg_echo('deleteconfirm')
-				)) . "</span>";
-				
-				$options .= $delete_link;
-			}
-		}
-		
-		// include a view for plugins to extend
-		$options = elgg_view("rubric/options", array("object_type" => 'rubric', 'entity' => $rubric)) . elgg_view_likes($rubric) . $options;
-	}
-	
-	echo <<<HTML
-	<div id="rubric clearfloat">
-			<div id="content_header" class="clearfloat">
-				<div class="content_header_title"><h2>{$title}</h2></div>
-			</div>
-			<div class="entity_listing_icon">
-				$user_icon
-			</div>
-			<div class="entity_listing_info">
-				<div class="entity_metadata">$options</div>
-				<p class="entity_subtext">
-					$date
-					$comments_link
-				</p>
-				<p class="tags">$tags_output</p>
-				<span class="body"><br />$description_output<br /></span>
-			</div>
-				$revisions_output
-			<div class="clearfloat"></div>
-			<div class="rubric_body">
-				$rubric_table
-			</div>
-			<div class="clearfloat"></div>				
-	</div>
-HTML;
-} else {
-	forward();
 }
