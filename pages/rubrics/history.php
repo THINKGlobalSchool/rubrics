@@ -13,17 +13,18 @@
 $guid = get_input('guid');
 $rubric = get_entity($guid);
 
-elgg_push_breadcrumb($vars['entity']->title, $vars['entity']->getURL());
-elgg_push_breadcrumb(elgg_echo('rubricbuilder:history'));
+elgg_push_breadcrumb($rubric->title, $rubric->getURL());
+elgg_push_breadcrumb(elgg_echo('rubrics:history'));
 
-$title = elgg_echo('rubricbuilder:history', array($rubric->title));
+$title = elgg_echo('rubrics:history', array($rubric->title));
 
-$content .= list_annotations($rubric_guid, 'rubric', $limit, false);
 $content = elgg_list_annotations(array(
-	'entity_guid' => $rubric->getGUID(),
+	'guid' => $rubric->getGUID(),
 	'annotation_name' => 'rubric'
 ));
 
+$params['filter'] = false;
+$params['header'] = false;
 $params['content'] = $content;
 $params['title'] = $title;
 

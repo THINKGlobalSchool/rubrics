@@ -30,6 +30,7 @@
  *
  * @todo
  *	work out sticky forms for column info.
+ *	icon overrides
  *
  *	deprecate the river view using the old rubricbuilder name
  *	Is the rubric content running through elgg_echo() on purpose?
@@ -70,6 +71,8 @@ function rubrics_init() {
 	// Profile menu hook is user_hover now
 	elgg_register_plugin_hook_handler('register', 'menu:user_hover', 'rubrics_user_hover_menu');
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'rubrics_add_fork_menu_item');
+
+	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'rubrics_icon_url_override');
 	
 	// Extend options for favorites
 	// @todo not supported in current 1.8
@@ -101,10 +104,11 @@ function rubrics_init() {
  *  All rubrics:      rubrics/all
  *  User's rubrics:   rubrics/owner/<username>
  *  Friends' rubrics: rubrics/friends/<username>
- *  View rubric:      rubrics/view/<guid>/<title><?rev=<annotation_id>> Optional history
+ *  View rubric:      rubrics/view/<guid>/<title><?rev=<annotation_id>> Optional revision
  *  New rubric:       rubrics/add/<container_guid> (container: user, group, parent)
  *  Edit rubric:      rubrics/edit/<guid>
  *  Group rubrics:    rubrics/group/<guid>/owner
+ *	Rubric history:   rubrics/history/<guid>/<title>
  *
  * Titles are ignored
  *
@@ -335,7 +339,7 @@ function rubrics_add_fork_menu_item($hook, $type, $return, $options) {
 			'href' => $url,
 			'name' => 'fork',
 			'text' => $text,
-			'link_class' => 'elgg-requires-confirmation'
+			'link_class' => 'elgg-requires-confirmation',
 		));
 
 		$return[] = $item;
@@ -392,4 +396,35 @@ function rubrics_get_rubric_info($rubric, $revision = null) {
 	}
 
 	return $info;
+}
+
+
+/**
+ * Override icon for rubrics
+ *
+ * @return string Relative URL
+ */
+function rubrics_icon_url_override($hook, $type, $value, $params) {
+	$rubric = $params['entity'];
+	$size = $params['size'];
+
+	if (elgg_instanceof($rubric, 'object', 'rubric')) {
+		switch ($size) {
+			case 'large':
+				$url = "mod/rubrics/images/rubric_lrg.gif";
+				break;
+
+			case 'medium':
+			case 'small':
+			default:
+				$url = "mod/rubrics/images/rubric.gif";
+				break;
+
+			case 'tiny':
+				$url = "mod/rubrics/images/rubric_river.gif";
+				break;
+		}
+
+		return $url;
+	}
 }

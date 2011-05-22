@@ -11,52 +11,32 @@
  * Some code borrowed from Pages plugin
  */
 
-$annotation = $vars['annotation'];
-$entity = get_entity($annotation->entity_guid);
+$revision = $vars['annotation'];
+$rubric = get_entity($revision->entity_guid);
+$rubric_info = rubrics_get_rubric_info($rubric, $revision);
 
-$icon = elgg_view(
-	"annotation/icon", array(
-	'annotation' => $vars['annotation'],
-	'size' => 'small',
-  )
-);
-
-$owner_guid = $annotation->owner_guid;
-$owner = get_entity($owner_guid);
+$owner = get_entity($revision->owner_guid);
+$owner_url = elgg_view('output/url', array(
+	'text' => $owner->name,
+	'href' => $owner->getURL()
+));
+$icon = elgg_view_entity_icon($owner, 'small');
 		
-$date = sprintf(elgg_echo('rubricbuilder:revisioncreatedby'), 
-	friendly_time($annotation->time_created),
-	
-	"<a href=\"" . $owner->getURL() . "\">" . $owner->name ."</a>"
-);
+$metadata = elgg_echo('rubrics:revision_created_by', array(
+	elgg_get_friendly_time($revision->time_created),
+	$owner_url
+));
 
-$revision = get_annotation($annotation->id);
-$revision = unserialize($revision->value);
-$link = $entity->getURL() . "?rev=" . $annotation->id;
-$title = $revision['title'];
+$link = elgg_http_add_url_query_elements($rubric->getURL(), array('rev_id' => $revision->id));
+$title = $rubric_info['title'];
 $linked_title = "<a href=\"$link\" title=\"" . htmlentities($title) . "\">{$title}</a>";
 
-
-
-
-$info = <<<HTML
-	<div><a href="$link">{$title}</a></div>
-	<div>$rev</div>
+// view: page/components/summary requires an entity to be passed because
+// it builds its own links. We don't want that, so write the html manually
+$html = <<<HTML
+	$metadata
+	<h3>$title_link</h3>
+	<div class="elgg-list-content">$linked_title</div>
 HTML;
 
-//echo elgg_view_listing($icon, $info);
-
-echo <<<HTML
-	<div class="rubric entity_listing clearfloat">
-		<div class="entity_listing_icon">
-			$icon
-		</div>
-		<div class="entity_listing_info">
-			<p class="entity_title">$linked_title</p>
-			<p class="entity_subtext">
-				$date
-			</p>
-		</div>
-	</div>
-HTML;
-?>
+echo elgg_view_image_block($icon, $html);

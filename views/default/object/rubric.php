@@ -162,5 +162,5 @@ HTML;
 	);
 	$list_body = elgg_view('page/components/summary', $params);
 
-	echo elgg_view_image_block($rubric_icon, $list_body);
+	echo elgg_view_image_block($icon, $list_body);
 }

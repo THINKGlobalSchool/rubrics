@@ -77,8 +77,6 @@ if ($current_local_revision != $count) {
 	));
 }
 
-$history_url = $CONFIG->url . "pg/rubric/{$user->username}/history/" . $rubric_guid;
-
 // Get revision author
 $revision_author = get_entity(get_annotation($flipped_revisions[$vars['current_local_revision']])->owner_guid);
 $author_content = "<a href='{$vars['url']}pg/rubric/{$revision_author->username}'>{$revision_author->name}</a>";
@@ -94,7 +92,7 @@ $author_content = elgg_echo("rubrics:revision_author");
 
 $history_link = elgg_view('output/url', array(
 	'text' => $count,
-	'href' => $history_url
+	'href' => $rubric->getHistoryURL()
 ));
 
 $history_dropdown = elgg_echo('rubrics:revision') . elgg_view("input/dropdown", array(

@@ -104,4 +104,14 @@ class Rubric extends ElggObject {
 	public function setNumCols($value) {
 		$this->num_rows = $value;
 	}
+
+	/**
+	 * Returns the URL for this rubric's history.
+	 *
+	 * @return string The history URL
+	 */
+	public function getHistoryURL() {
+		return 'pg/rubrics/history/' . $this->getGUID()
+			. '/' . elgg_get_friendly_title($this->title);
+	}
 }
