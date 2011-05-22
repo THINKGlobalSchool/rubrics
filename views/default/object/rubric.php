@@ -13,7 +13,7 @@
 
 $full = elgg_extract('full_view', $vars, false);
 $rubric = elgg_extract('entity', $vars, false);
-$rev = elgg_extract('rev', $vars, false);
+$rev_id = elgg_extract('rev_id', $vars, false);
 
 if (!$rubric) {
 	return true;
@@ -24,7 +24,10 @@ $container = $rubric->getContainerEntity();
 $categories = elgg_view('output/categories', $vars);
 $excerpt = elgg_get_excerpt($rubric->description);
 
-$body = elgg_view('output/longtext', array('value' => $rubric->description));
+$body = elgg_view('output/longtext', array(
+	'value' => $rubric->description,
+	'class' => 'pbl'
+));
 
 $owner_link = elgg_view('output/url', array(
 	'href' => "file/owner/$owner->username",
@@ -71,26 +74,26 @@ if ($full) {
 	$revisions = $rubric->getAnnotations('rubric', 0);
 
 	$count = count($revisions);
-	$revisions_local = array();
+	$local_revisions = array();
 
 	for ($i = 0; $i < $count; $i++) {
-		$revisions_local[$revisions[$i]->id] = $i + 1;
+		$local_revisions[$revisions[$i]->id] = $i + 1;
 	}
 
-	if ($rev) {
-		$revision = elgg_get_annotation_from_id($rev);
+	if ($rev_id) {
+		$revision = elgg_get_annotation_from_id($rev_id);
 		
 		// Make sure we have an annotation object, and that it belongs to this rubric
 		if ($revision && $revision->entity_guid == $rubric->getGUID()) {
-			$revision = unserialize($revision->value);
+			$info = unserialize($revision->value);
 
-			$title       = $revision['title'];
-			$description = $revision['description'];
-			$contents    = unserialize($revision['contents']);
-			$num_rows    = $revision['rows'];
-			$num_cols    = $revision['cols'];
+			$title       = $info['title'];
+			$description = $info['description'];
+			$contents    = unserialize($info['contents']);
+			$num_rows    = $info['rows'];
+			$num_cols    = $info['cols'];
 
-			$current_revision = $revisions_local[$revision_id];
+			$current_revision = $local_revisions[$rev_id];
 
 		} else {
 			// Something funny is going on...
@@ -104,11 +107,11 @@ if ($full) {
 		$num_cols		  = $rubric->getNumCols();
 		$current_revision = $count;
 	}
-
+	
 	$revisions_output = elgg_view('rubrics/revision_menu', array(
-		'revision_id' => $revision_id,
+		'revision' => $revision,
 		'rubric_guid' => $rubric->getGUID(), 
-		'local_revisions' => $revisions_local, 
+		'local_revisions' => $local_revisions,
 		'current_local_revision' => $current_revision
 	));
 
@@ -157,9 +160,9 @@ if ($full) {
 	echo <<<HTML
 $header
 $rubric_info
-$revisions_output
 <div class="elgg-content">
 	$body
+	$revisions_output
 	$rubric_table
 	$comments
 </div>
@@ -206,10 +209,10 @@ if (isset($rubric) && $rubric instanceof Rubric) {
 	// Build an array of 'local' revisions
 	// ie: map the annotation id to a local number
 	// annotations 87, 88, 89, 92, 98 becomes 1, 2, 3, 4, 5
-	$revisions_local = array();
+	$local_revisions = array();
 
 	for ($i = 0; $i < $count; $i++) {
-		$revisions_local[$revisions[$i]->id] = $i + 1;
+		$local_revisions[$revisions[$i]->id] = $i + 1;
 	}
 		
 	//	$current_revision = $count;
@@ -229,7 +232,7 @@ if (isset($rubric) && $rubric instanceof Rubric) {
 			$num_rows		= $revision['rows'];
 			$num_cols		= $revision['cols'];
 			
-			$current_revision = $revisions_local[$rev];
+			$current_revision = $local_revisions[$rev];
 			
 			if ($current_revision == $count)
 				$current_revision = $count;
@@ -290,7 +293,7 @@ if (isset($rubric) && $rubric instanceof Rubric) {
 	$user_icon = elgg_view("profile/icon",array('entity' => $owner, 'size' => 'tiny'));
 	$tags_output = elgg_view('output/tags', array('tags' => $rubric->tags));
 	$description_output = elgg_view('output/longtext',array('value' => $description));
-	$revisions_output = elgg_view('rubrics/revisionmenu', array('rev_guid' => $rev, 'rubric_guid' => $rubric->getGUID(), 'local_revisions' => $revisions_local, 'current_local_revision' => $current_revision));
+	$revisions_output = elgg_view('rubrics/revisionmenu', array('rev_guid' => $rev, 'rubric_guid' => $rubric->getGUID(), 'local_revisions' => $local_revisions, 'current_local_revision' => $current_revision));
 	
 	$date = friendly_time($rubric->time_created);
 

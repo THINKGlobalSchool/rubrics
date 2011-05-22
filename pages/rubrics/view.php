@@ -12,7 +12,7 @@
 
 $guid = get_input('guid');
 $rubric = get_entity($guid);
-$rev = get_input('rev', null);
+$rev_id = get_input('rev_id', null);
 
 if (!elgg_instanceof($rubric, 'object', 'rubric')) {
 	$content = elgg_echo('rubrics:not_found');
@@ -30,7 +30,7 @@ if (!elgg_instanceof($rubric, 'object', 'rubric')) {
 	elgg_push_breadcrumb($title);
 	$content = elgg_view_entity($rubric, array(
 		'full_view' => true,
-		'rev' => $rev
+		'rev_id' => $rev_id
 	));
 }
 

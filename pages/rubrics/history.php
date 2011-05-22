@@ -10,51 +10,23 @@
  * 
  */
 
-// include the Elgg engine
-include_once dirname(dirname(dirname(dirname(__FILE__)))) . "/engine/start.php"; 
-
-// logged in users only
-gatekeeper();
-
-// get any input
-$rubric_guid = get_input('rubric_guid');
-
-// if username or owner_guid was not set as input variable, we need to set page owner
-// Get the current page's owner
-$page_owner = page_owner_entity();
-if (!$page_owner) {
-	$page_owner_guid = get_loggedin_userid();
-	if ($page_owner_guid)
-		set_page_owner($page_owner_guid);
-}	
-
-$vars['entity'] = get_entity($rubric_guid);
-
-$limit = get_input("limit", 10);
-$offset = get_input("offset", 0);
+$guid = get_input('guid');
+$rubric = get_entity($guid);
 
 elgg_push_breadcrumb($vars['entity']->title, $vars['entity']->getURL());
 elgg_push_breadcrumb(elgg_echo('rubricbuilder:history'));
-	
 
-// Title
-$title = elgg_echo('rubricbuilder:history');
-$title .= ': ' . $vars['entity']->title;
- 
-// create content for main column
-$content = elgg_view('navigation/breadcrumbs');
-$content .= elgg_view_title($title);
+$title = elgg_echo('rubricbuilder:history', array($rubric->title));
 
-$context = get_context();
-set_context('search');
-	
 $content .= list_annotations($rubric_guid, 'rubric', $limit, false);
+$content = elgg_list_annotations(array(
+	'entity_guid' => $rubric->getGUID(),
+	'annotation_name' => 'rubric'
+));
 
+$params['content'] = $content;
+$params['title'] = $title;
 
-set_context($context);
+$body = elgg_view_layout('content', $params);
 
-// layout the sidebar and main column using the default sidebar
-$body = elgg_view_layout('one_column_with_sidebar', $content, '');
-
-// create the complete html page and send to browser
 echo elgg_view_page($title, $body);

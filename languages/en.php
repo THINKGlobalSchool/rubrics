@@ -34,7 +34,7 @@ $english = array(
 	'rubrics:label:view' => 'View Rubric',
 	
 	// Actions
-	'rubrics:fork' => 'Make Copy',
+	'rubrics:fork' => 'Copy',
 	'rubrics:restore' => 'Restore this version',
 	
 	// Action labels
@@ -60,10 +60,10 @@ $english = array(
 	'rubrics:edit' => 'Edit Rubric',
 	'rubrics:revision' => 'Revision: ',
 	'rubrics:history' => 'History',
-	'rubrics:revisionhistory' => 'Revision History',
-	'rubrics:viewingrevision' => 'Viewing Revision: ',
-	'rubrics:revisionauthor' => 'Revision Author',
-	'rubrics:revisioncreatedby' => 'Revision created %s by %s',
+	'rubrics:revision_history' => 'Revision History',
+	'rubrics:viewing_revision' => 'Viewing Revision: ',
+	'rubrics:revision_author' => 'Revision Author',
+	'rubrics:revision_created_by' => 'Revision created %s by %s',
 	'rubrics:forked_title' => "Copy of %s",
 	
 	// River terms

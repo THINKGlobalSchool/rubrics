@@ -39,7 +39,6 @@
  *	Anything extending rubric/options should now extend the entity menu for rubric entities. (See
  *	how the fork menu is added.)
  *	Need a fork icon
- *	Fork action
  *	Better CSS padding
  *	Weird spaces in css in IE.
  *	Revision link on entity
@@ -169,72 +168,6 @@ function rubrics_page_handler($page) {
 
 	elgg_pop_context();
 
-	return true;
-
-
-
-
-
-	
-	if (isset($page[0]) && !empty($page[0])) {
-		$username = $page[0];
-
-//		// push breadcrumb
-		elgg_push_breadcrumb(elgg_echo('rubrics:allrubrics'), "{$CONFIG->site->url}pg/rubric");
-
-		// forward away if invalid user.
-		if (!$user = get_user_by_username($username)) {
-			register_error(elgg_echo('rubrics:error:unknown_username'));
-			forward($_SERVER['HTTP_REFERER']);
-		}
-
-		set_page_owner($user->getGUID());
-		$crumbs_title = sprintf(elgg_echo('rubrics:owned_rubrics'), $user->name);
-		$crumbs_url = "{$CONFIG->site->url}pg/rubric/$username";
-		elgg_push_breadcrumb($crumbs_title, $crumbs_url);
-
-		$action = isset($page[1]) ? $page[1] : FALSE;
-		$page2 = isset($page[2]) ? $page[2] : FALSE;
-		$page3 = isset($page[3]) ? $page[3] : FALSE;
-		
-		switch ($action) {
-			case 'history':
-				if ($page2) {
-					set_input('guid', $page2);
-					add_submenu_item(elgg_echo('rubrics:label:view'), $CONFIG->url . "pg/rubric/{$user->username}/view/{$page2}", 'rubriclinks');
-					include $CONFIG->pluginspath . 'rubrics/pages/history.php';
-				}
-				break;
-			case 'view':
-				if ($page2) {
-					set_input('rubric_guid', $page2);				
-					if ($page3)
-						set_input('rubric_revision', $page3);
-						include($CONFIG->pluginspath . "rubrics/pages/view.php");
-				}
-				break;
-			case 'edit':
-				if ($page2) {
-					set_input('rubric_guid', $page2);
-					include $CONFIG->pluginspath . 'rubrics/pages/edit.php';
-				}
-				break;
-			case 'new':
-				include $CONFIG->pluginspath . 'rubrics/pages/add.php';
-				break;
-			case 'friends':
-				include $CONFIG->pluginspath . 'rubrics/pages/friends.php';
-				break;
-			default:
-				include $CONFIG->pluginspath . 'rubrics/pages/index.php';
-				break;
-				
-		}
-		
-	} else {
-		include $CONFIG->pluginspath . 'rubrics/pages/everyone.php';
-	}
-	
 	return true;
 }
 

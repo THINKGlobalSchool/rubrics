@@ -131,6 +131,11 @@ table.elgg-rubric-display p.elgg-rubrics-header {
 	-webkit-border-radius: 3px;
 }
 
+#elgg-rubric-history table {
+	margin: auto;
+}
+
+
 
 <?php
 return true;

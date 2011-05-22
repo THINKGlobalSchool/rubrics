@@ -46,7 +46,6 @@ if (!$content) {
 	$content = elgg_echo("rubric:none");
 }
 
-
 $params['content'] = $content;
 $params['title'] = $title;
 $params['sidebar'] = $sidebar;
