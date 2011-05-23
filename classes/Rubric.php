@@ -54,7 +54,7 @@ class Rubric extends ElggObject {
 	 *
 	 * @return type array
 	 */
-	public static function getDefaultContent() {
+	public static function getDefaultContents() {
 		// this is returning a 2d array because the caller is expecting table data that's stored as
 		// nested arrays.
 		return array(

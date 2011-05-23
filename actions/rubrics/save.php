@@ -42,25 +42,7 @@ if (!$headers || !$data || !$title) {
 	forward(REFERER);
 }
 
-// we know the # of headers so use that to generate offsets and limits
-$cols = count($headers);
-$content = array($headers);
-
-// Get rubric content
-$i = 0;
-$row = array();
-foreach($data as $item) {
-	$row[] = $item;
-
-	// count is 1-indexed
-	if ($i == $cols - 1) {
-		$content[] = $row;
-		$row = array();
-		$i = 0;
-	} else {
-		$i++;
-	}
-}
+$info = rubrics_get_matrix_info_from_input($headers, $data);
 
 // new or existing entity?
 if ($guid) {
@@ -82,7 +64,7 @@ if ($guid) {
 	$river_action = 'create';
 }
 
-$rubric->contents			= serialize($content);
+$rubric->contents			= serialize($info['contents']);
 $rubric->title 				= $title;
 $rubric->description 		= $description;
 $rubric->container_guid 	= $container_guid;
@@ -90,8 +72,8 @@ $rubric->access_id			= $access_id;
 $rubric->write_access_id	= $write_access;
 $rubric->tags 				= $tagarray;
 $rubric->comments_on		= $comments_on;
-$rubric->num_cols           = $cols;
-$rubric->num_rows           = count($content);
+$rubric->num_cols           = $info['num_cols'];
+$rubric->num_rows           = $info['num_rows'];
 
 if (!$rubric->save()) {
 	register_error(elgg_echo("rubricbuilder:error"));		
@@ -107,8 +89,8 @@ $revision = array(
 	"contents" => $rubric->contents,
 	"title" => $rubric->title,
 	"description" => $rubric->description,
-	'cols' => $cols,
-	'rows' => count($content)
+	'cols' => $info['num_cols'],
+	'rows' => $info['num_rows']
 );
 
 // Annotate for revision history

@@ -54,6 +54,9 @@ $english = array(
 	'rubrics:blank' => 'Rubric title cannot be blank',
 	'rubrics:failure'	=> 'Your action failed',
 	'rubrics:error:unknown_username' => 'Unknown User',
+	'rubrics:cannot_delete_column' => 'You must have one column.',
+	'rubrics:cannot_delete_row' => 'You must have one row.',
+	'rubrics:cannot_load' => 'Error loading rubric matrix. Using defaults',
 
 	// Titles/Label
 	'rubrics:add' => 'Add Rubric',

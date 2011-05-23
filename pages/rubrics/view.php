@@ -14,6 +14,11 @@ $guid = get_input('guid');
 $rubric = get_entity($guid);
 $rev_id = get_input('rev_id', null);
 
+// remove the edit menu item if we're looking at a revision
+if ($rev_id) {
+	elgg_unregister_menu_item('entity', 'edit');
+}
+
 $rubric_info = rubrics_get_rubric_info($rubric, $rev_id);
 
 if (!elgg_instanceof($rubric, 'object', 'rubric') || !$rubric_info) {

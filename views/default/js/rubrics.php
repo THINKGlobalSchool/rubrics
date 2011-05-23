@@ -20,6 +20,9 @@ elgg.rubrics.init = function() {
 	$('select.elgg-rubrics-revision').live('change', elgg.rubrics.revisionPulldown);
 }
 
+/**
+ * Forward to the correct history when selected.
+ */
 elgg.rubrics.revisionPulldown = function(e) {
 	$this = $(this);
 	var guid = $this.parents('form').find('input[name=guid]').val();

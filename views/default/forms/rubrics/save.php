@@ -14,7 +14,7 @@ elgg_load_js('rubrics:forms');
 
 $entity = elgg_extract('entity', $vars);
 $title = elgg_extract('title', $vars, '');
-$desc = elgg_extract('description', $vars, '');
+$description = elgg_extract('description', $vars, '');
 $tags = elgg_extract('tags', $vars, '');
 $access_id = elgg_extract('access_id', $vars, ACCESS_DEFAULT);
 $container_guid = elgg_extract('container_guid', $vars, null);
@@ -25,13 +25,25 @@ $comments_on = elgg_extract('comments_on', $vars, 'Yes');
 $headers = elgg_extract('headers', $vars);
 $data = elgg_extract('data', $vars);
 
-
 // If entity exists, we're editing existing
 if ($entity instanceof Rubric) {
 	$contents = $entity->getContents();
 } else {
 	// use the builder to create default content
-	$contents = Rubric::getDefaultContent();
+	$contents = Rubric::getDefaultContents();
+}
+
+// if the headers and data sticky values are set ned to override whatever is sent as content.
+if ($headers && $data) {
+	if ($info = rubrics_get_matrix_info_from_input($headers, $data)) {
+		$contents = $info['contents'];
+	}
+}
+
+// if this is still empty something is wrong. use defaults.
+if (!$contents) {
+	register_error(elgg_echo('rubrics:cannot_load'));
+	$contents = Rubric::getDefaultContents();
 }
 
 // Get views for inputs
@@ -135,7 +147,7 @@ $form_body = <<<HTML
             $description_textbox
 		</p>
 		<p>
-			<label>$rubric_label</label<br />
+			<label>$rubric_label</label><br />
 			$rubric_input
 		</p>
 		<p>

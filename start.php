@@ -9,7 +9,7 @@
  * @link http://www.thinkglobalschool.com/
  *
  * @todo The storage approach can be simplified by making the following changes. These would
- * require either backword compatibility in the models or an upgrade.
+ * require either backword compatibility in the models or an upgrade script.
  *
  * Old version (Rubric entity):
  *	->num_rows and ->num_cols stored dimension
@@ -29,18 +29,16 @@
  *
  *
  * @todo
- *	work out sticky forms for column info.
  *	icon overrides
  *
  *	deprecate the river view using the old rubricbuilder name
  *	Is the rubric content running through elgg_echo() on purpose?
- *	Remove the edit option when viewing a revision
  *	Anything extending rubric/options should now extend the entity menu for rubric entities. (See
  *	how the fork menu is added.)
  *	Need a fork icon
  *	Better CSS padding
  *	Weird spaces in css in IE.
- *	History page
+ *	Widgets?
  */
 
 elgg_register_event_handler('init', 'system', 'rubrics_init');
@@ -66,11 +64,12 @@ function rubrics_init() {
 		'href' => 'rubrics'
 	));
 
+	// menus
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'rubrics_owner_block_menu');
 
-	// Profile menu hook is user_hover now
 	elgg_register_plugin_hook_handler('register', 'menu:user_hover', 'rubrics_user_hover_menu');
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'rubrics_add_fork_menu_item');
+	elgg_register_plugin_hook_handler('prepare', 'menu:entity', 'rubrics_remove_edit_menu_item');
 
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'rubrics_icon_url_override');
 	
@@ -88,13 +87,14 @@ function rubrics_init() {
 	elgg_register_action('rubrics/restore', "$actions_root/restore.php");
 
 	// Add widget 
-	add_widget_type('rubric', elgg_echo('rubrics'), elgg_echo('rubrics:widget:description'));
-	
+//	add_widget_type('rubric', elgg_echo('rubrics'), elgg_echo('rubrics:widget:description'));
+//	elgg_register_widget_type('rubric', elgg_echo('rubrics'), elgg_echo('rubrics:widget:description'));
+
 	// Register plugin hook to extend permissions checking to include write access
-	register_plugin_hook('permissions_check', 'object', 'rubric_write_permission_check');
+	elgg_register_plugin_hook_handler('permissions_check', 'object', 'rubric_write_permission_check');
 		
 	// for search
-	register_entity_type('object', 'rubric');
+	elgg_register_entity_type('object', 'rubric');
 }
 
 /**
@@ -308,7 +308,7 @@ function rubrics_prepare_form_vars($entity = null, $revision_id = null) {
 	}
 
 	if (elgg_is_sticky_form('rubrics')) {
-		$sticky_values = elgg_get_sticky_values('file');
+		$sticky_values = elgg_get_sticky_values('rubrics');
 		foreach ($sticky_values as $key => $value) {
 			$values[$key] = $value;
 		}
@@ -398,7 +398,6 @@ function rubrics_get_rubric_info($rubric, $revision = null) {
 	return $info;
 }
 
-
 /**
  * Override icon for rubrics
  *
@@ -426,5 +425,84 @@ function rubrics_icon_url_override($hook, $type, $value, $params) {
 		}
 
 		return $url;
+	}
+}
+
+/**
+ * Uses headers and flat data arrays to build a matrix like:
+ *
+ * In: $headers = array(h1, h2, h3)
+ * In: $data = array(v1, v2, v3, v4, v5, v6)
+ *
+ * Out:
+ *	array(
+ *		'num_rows' => int,
+ *		'num_cols' => int,
+ *		'contents' => array(
+ *			array(h1, h2, h3),
+ *			array(v1, v2, v3),
+ *			array(v4, v5, v6)
+ *		)
+ *	)
+ *
+ * @param array $headers
+ * @param array $data
+ * @return array The above array
+ */
+function rubrics_get_matrix_info_from_input(array $headers, array $data) {
+	// we know the # of headers so use that to generate offsets and limits
+	$cols = count($headers);
+	$contents = array($headers);
+
+	$i = 0;
+	$row = array();
+	foreach($data as $item) {
+		$row[] = $item;
+
+		// count is 1-indexed
+		if ($i == $cols - 1) {
+			$contents[] = $row;
+			$row = array();
+			$i = 0;
+		} else {
+			$i++;
+		}
+	}
+
+	return array(
+		'num_cols' => count($headers),
+		'num_rows' => count($contents),
+		'contents' => $contents
+	);
+}
+
+/**
+ * Removes the edit entity menu item if we're looking at a revision.
+ *
+ * @param type $hook
+ * @param type $type
+ * @param type $value
+ * @param type $params
+ * @return array
+ */
+function rubrics_remove_edit_menu_item($hook, $type, $value, $params) {
+	// only if we're on a revision
+	$is_revision = elgg_extract('is_revision', $params, false);
+	if (!$is_revision) {
+		return null;
+	}
+	
+	$entity = elgg_extract('entity', $params);
+	$menu = $value;
+
+	if (elgg_instanceof($entity, 'object', 'rubric')) {
+		foreach ($value as $i => $menu) {
+			foreach ($menu as $j => $item) {
+				if ($item->getName() == 'edit') {
+					unset($value[$i][$j]);
+				}
+			}
+		}
+		return $value;
 	}
 }

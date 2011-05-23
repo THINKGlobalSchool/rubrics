@@ -30,7 +30,7 @@ $excerpt = elgg_get_excerpt($rubric_info['description']);
 
 $body = elgg_view('output/longtext', array(
 	'value' => $rubric_info['description'],
-	'class' => 'pbl'
+	'class' => 'pbm'
 ));
 
 $owner_link = elgg_view('output/url', array(
@@ -43,6 +43,25 @@ $icon = elgg_view_entity_icon($owner, 'small');
 
 $tags = elgg_view('output/tags', array('tags' => $rubric->tags));
 $date = elgg_view_friendly_time($rubric->time_created);
+
+
+// Build an array of 'local' revisions
+// ie: map the annotation id to a local number
+// annotations 87, 88, 89, 92, 98 becomes 1, 2, 3, 4, 5
+$revisions = $rubric->getAnnotations('rubric', 0);
+
+$count = count($revisions);
+$local_revisions = array();
+
+for ($i = 0; $i < $count; $i++) {
+	$local_revisions[$revisions[$i]->id] = $i + 1;
+}
+
+if ($rev_id) {
+	$current_revision = $local_revisions[$rev_id];
+} else {
+	$current_revision = $count;
+}
 
 $comments_link = '';
 
@@ -62,6 +81,7 @@ $metadata = elgg_view_menu('entity', array(
 	'handler' => 'rubrics',
 	'sort_by' => 'priority',
 	'class' => 'elgg-menu-hz',
+	'is_revision' => ($current_revision != $count)
 ));
 
 $subtitle = "$author_text $date $categories $comments_link";
@@ -72,24 +92,6 @@ if (elgg_in_context('widgets')) {
 }
 
 if ($full) {
-	// Build an array of 'local' revisions
-	// ie: map the annotation id to a local number
-	// annotations 87, 88, 89, 92, 98 becomes 1, 2, 3, 4, 5
-	$revisions = $rubric->getAnnotations('rubric', 0);
-
-	$count = count($revisions);
-	$local_revisions = array();
-
-	for ($i = 0; $i < $count; $i++) {
-		$local_revisions[$revisions[$i]->id] = $i + 1;
-	}
-
-	if ($rev_id) {
-		$current_revision = $local_revisions[$rev_id];
-	} else {
-		$current_revision = $count;
-	}
-	
 	$revisions_output = elgg_view('rubrics/revision_menu', array(
 		'revision' => $revision,
 		'rubric_guid' => $rubric->getGUID(), 

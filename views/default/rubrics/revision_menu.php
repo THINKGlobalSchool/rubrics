@@ -22,6 +22,7 @@ $local_revisions = elgg_extract('local_revisions', $vars);
 $current_local_revision = elgg_extract('current_local_revision', $vars);
 $revision = elgg_extract('revision', $vars, null);
 
+
 $count = count($local_revisions);
 
 // Create the dropdown array, sorting in reverse order
