@@ -31,7 +31,7 @@ $link = elgg_http_add_url_query_elements($rubric->getURL(), array('rev_id' => $r
 $title = $rubric_info['title'];
 $linked_title = "<a href=\"$link\" title=\"" . htmlentities($title) . "\">{$title}</a>";
 
-// view: page/components/summary requires an entity to be passed because
+// view: object/elements/summary requires an entity to be passed because
 // it builds its own links. We don't want that, so write the html manually
 $html = <<<HTML
 	$metadata
