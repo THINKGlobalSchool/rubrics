@@ -29,4 +29,15 @@ if (!$new_rubric->save()) {
 	forward($_SERVER['HTTP_REFERER']);
 }
 
+$revision = array(
+	"contents" => $new_rubric->contents,
+	"title" => $new_rubric->title,
+	"description" => $new_rubric->description,
+	'cols' => $new_rubric->num_cols,
+	'rows' => $new_rubric->num_rows
+);
+
+// Annotate for revision history
+$new_rubric->annotate('rubric', serialize($revision), $new_rubric->access_id);
+
 forward($new_rubric->getURL());

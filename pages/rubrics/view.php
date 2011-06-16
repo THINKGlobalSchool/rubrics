@@ -22,7 +22,7 @@ if ($rev_id) {
 $rubric_info = rubrics_get_rubric_info($rubric, $rev_id);
 
 if (!elgg_instanceof($rubric, 'object', 'rubric') || !$rubric_info) {
-	$content = elgg_echo('rubrics:not_found');
+	forward('rubrics');
 } else {
 	$page_owner = elgg_get_page_owner_entity();
 	$crumbs_title = $page_owner->name;

@@ -132,7 +132,7 @@ if ($full) {
 
 	$params = array(
 		'entity' => $rubric,
-		'title' => $rubric_info['title'],
+		'title' => false,
 		'metadata' => $metadata,
 		'subtitle' => $subtitle,
 		'tags' => $tags,
