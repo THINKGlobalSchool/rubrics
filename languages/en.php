@@ -70,10 +70,10 @@ $english = array(
 	'rubrics:forked_title' => "Copy of %s",
 	
 	// River terms
-	'rubrics:river:create' => 'published a new rubric',
-	'rubrics:river:update' => 'updated a rubric',
-	'rubrics:river:posted' => '%s posted',
-	'river:commented:object:rubric' => 'Rubric',
+	'river:create:object:rubric' => '%s published a Rubric titled %s',
+	'river:update:object:rubric' => '%s updated a Rubric titled %s',
+	'river:fork:object:rubric' => '%s copied a Rubric titled %s',
+
 	
 	// Widget
 	'rubrics:num' => 'Number of rubrics to display',

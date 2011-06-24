@@ -55,7 +55,7 @@ if ($guid) {
 
 	$success_msg = elgg_echo('rubrics:edited');
 	$river_view = 'river/object/rubrics/update';
-	$river_action = 'create';
+	$river_action = 'update';
 } else {
 	$rubric = new Rubric();
 
