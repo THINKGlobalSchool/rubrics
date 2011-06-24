@@ -17,6 +17,7 @@ $english = array(
 	'item:object:rubric' => 'Rubrics',
 	'rubrics:title' => 'Rubric',
 	'rubrics:owned_rubrics' => '%s\'s Rubrics',
+	'rubrics:group' => 'Group rubrics',
 	
 	// Default Content
 	'rubrics:criteria:default' => 'Criteria',
