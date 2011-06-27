@@ -86,9 +86,9 @@ function rubrics_init() {
 	elgg_register_action('rubrics/fork', "$actions_root/fork.php");
 	elgg_register_action('rubrics/restore', "$actions_root/restore.php");
 
-	// Add widget 
-//	add_widget_type('rubric', elgg_echo('rubrics'), elgg_echo('rubrics:widget:description'));
-//	elgg_register_widget_type('rubric', elgg_echo('rubrics'), elgg_echo('rubrics:widget:description'));
+	// Groups support
+	add_group_tool_option('rubrics', elgg_echo('rubrics:enablegroup'), true);
+	elgg_extend_view('groups/tool_latest', 'rubrics/group_rubrics');
 
 	// Register plugin hook to extend permissions checking to include write access
 	elgg_register_plugin_hook_handler('permissions_check', 'object', 'rubric_write_permission_check');

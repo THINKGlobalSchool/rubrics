@@ -20,6 +20,7 @@ $english = array(
 	'rubrics:group' => 'Group rubrics',
 	'rubric:none' => 'No rubrics',
 	'rubrics:friends' => 'Friends\' Rubrics',
+	'rubrics:enablegroup' => 'Enable group rubrics',
 	
 	// Default Content
 	'rubrics:criteria:default' => 'Criteria',
