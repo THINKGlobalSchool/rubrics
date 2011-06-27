@@ -19,6 +19,8 @@ $content .= elgg_list_entities(array(
 	'full_view' => false
 ));
 
+elgg_register_add_button();
+
 $body = elgg_view_layout('content', array(
 	'filter_context' => 'all',
 	'content' => $content,

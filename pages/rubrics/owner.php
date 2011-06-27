@@ -18,20 +18,20 @@ elgg_push_breadcrumb($owner->name);
 
 $params = array();
 
+$title = elgg_echo('rubrics:owned_rubrics', array($owner->name));
+
 if ($owner->guid == elgg_get_logged_in_user_guid()) {
-	// user looking at own files
-	$title = elgg_echo('rubrics:mine');
+	// user's rubrics
 	$params['filter_context'] = 'mine';
+	elgg_register_add_button();
 } elseif (elgg_instanceof($owner, 'user')) {
-	// someone else's files
-	$title = elgg_echo("rubrics:user", array($owner->name));
-	// do not show button or select a tab when viewing someone else's posts
+	// someone else's rubrics
+	// do not show button or select a tab when viewing someone else's rubrics
 	$params['filter_context'] = 'none';
-	$params['buttons'] = '';
 } else {
-	// group files
-	$title = elgg_echo("rubrics:user", array($owner->name));
+	// group rubrics
 	$params['filter'] = '';
+	elgg_register_add_button();
 }
 
 $content = elgg_list_entities(array(

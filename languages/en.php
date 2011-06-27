@@ -18,6 +18,8 @@ $english = array(
 	'rubrics:title' => 'Rubric',
 	'rubrics:owned_rubrics' => '%s\'s Rubrics',
 	'rubrics:group' => 'Group rubrics',
+	'rubric:none' => 'No rubrics',
+	'rubrics:friends' => 'Friends\' Rubrics',
 	
 	// Default Content
 	'rubrics:criteria:default' => 'Criteria',

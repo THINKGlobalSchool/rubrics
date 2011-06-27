@@ -24,6 +24,7 @@ if (!$content) {
 	$content = elgg_echo("rubric:none");
 }
 
+elgg_register_add_button();
 
 $body = elgg_view_layout('content', array(
 	'filter_context' => 'friends',

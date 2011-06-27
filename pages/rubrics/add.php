@@ -17,7 +17,6 @@ $vars = rubrics_prepare_form_vars();
 $content = elgg_view_form("rubrics/save", array(), $vars);
 $body = elgg_view_layout('content', array(
 	'filter' => '',
-	'buttons' => '',
 	'content' => $content,
 	'title' => $title,
 ));
