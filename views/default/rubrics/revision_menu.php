@@ -85,7 +85,7 @@ $author_content = "<a href='{$vars['url']}pg/rubric/{$revision_author->username}
 $history_toggler = elgg_view('output/url', array(
 	'text' => elgg_echo("rubrics:revision_history"),
 	'href' => '#elgg-rubric-history',
-	'class' => 'elgg-toggler'
+	'rel' => 'toggle'
 ));
 
 $viewing_revision = elgg_echo("rubrics:viewing_revision");
