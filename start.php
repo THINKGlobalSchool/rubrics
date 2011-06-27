@@ -66,11 +66,8 @@ function rubrics_init() {
 
 	// menus
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'rubrics_owner_block_menu');
-
-	elgg_register_plugin_hook_handler('register', 'menu:user_hover', 'rubrics_user_hover_menu');
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'rubrics_add_fork_menu_item');
 	elgg_register_plugin_hook_handler('prepare', 'menu:entity', 'rubrics_remove_edit_menu_item');
-
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'rubrics_icon_url_override');
 	
 	// Extend options for favorites
@@ -239,23 +236,6 @@ function rubrics_owner_block_menu($hook, $type, $return, $params) {
 			$return[] = $item;
 		}
 	}
-
-	return $return;
-}
-
-/**
- * Adds a rubrics entry to the user hover and profile menus.
- *
- * @param type $hook
- * @param type $type
- * @param type $return
- * @param type $params
- * @return array
- */
-function rubrics_user_hover_menu($hook, $type, $return, $params) {
-	$url = "rubrics/owner/{$params['entity']->username}";
-	$item = new ElggMenuItem('rubrics', elgg_echo('rubrics'), $url);
-	$return[] = $item;
 
 	return $return;
 }
