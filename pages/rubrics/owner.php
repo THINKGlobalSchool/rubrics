@@ -23,7 +23,7 @@ $title = elgg_echo('rubrics:owned_rubrics', array($owner->name));
 if ($owner->guid == elgg_get_logged_in_user_guid()) {
 	// user's rubrics
 	$params['filter_context'] = 'mine';
-	elgg_register_add_button();
+	elgg_register_title_button();
 } elseif (elgg_instanceof($owner, 'user')) {
 	// someone else's rubrics
 	// do not show button or select a tab when viewing someone else's rubrics
@@ -31,7 +31,7 @@ if ($owner->guid == elgg_get_logged_in_user_guid()) {
 } else {
 	// group rubrics
 	$params['filter'] = '';
-	elgg_register_add_button();
+	elgg_register_title_button();
 }
 
 $content = elgg_list_entities(array(
