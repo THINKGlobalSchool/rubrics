@@ -111,12 +111,12 @@ if ($full) {
 		for ($j = 0; $j < $num_cols; $j++) {
 			if ($i == 0) {
 				// these are headers
-				$rubric_table .= "<td class=\"center middle\"><p class=\"elgg-rubrics-header\">";
+				$rubric_table .= "<td class=\"center\"><p class=\"elgg-rubrics-header\">";
 				$rubric_table .= elgg_view('output/text', array(
 					'value' => elgg_echo($contents[$i][$j])
 				));
 			} else {
-				$rubric_table .= "<td class=\"middle\"><p>";
+				$rubric_table .= "<td><p>";
 		    	$rubric_table .=  elgg_view('output/text', array(
 					'value' => elgg_echo($contents[$i][$j])
 				));
