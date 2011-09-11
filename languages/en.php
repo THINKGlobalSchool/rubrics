@@ -21,6 +21,7 @@ $english = array(
 	'rubric:none' => 'No rubrics',
 	'rubrics:friends' => 'Friends\' Rubrics',
 	'rubrics:enablegroup' => 'Enable group rubrics',
+	'river:comment:object:rubric' => '%s commented on the rubric %s',
 	
 	// Default Content
 	'rubrics:criteria:default' => 'Criteria',
