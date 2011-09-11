@@ -83,6 +83,8 @@ if (!$rubric->save()) {
 elgg_clear_sticky_form('rubrics');
 
 system_message($success_msg);
+// Hacked in for now
+$river_view = 'river/object/rubrics/create';
 add_to_river($river_view, $river_action, elgg_get_logged_in_user_guid(), $rubric->getGUID());
 
 $revision = array(

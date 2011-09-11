@@ -39,6 +39,6 @@ $revision = array(
 
 // Annotate for revision history
 $new_rubric->annotate('rubric', serialize($revision), $new_rubric->access_id);
-add_to_river('river/object/rubrics/update', 'fork', elgg_get_logged_in_user_guid(), $new_rubric->getGUID());
+//add_to_river('river/object/rubrics/update', 'fork', elgg_get_logged_in_user_guid(), $new_rubric->getGUID());
 
 forward($new_rubric->getURL());
