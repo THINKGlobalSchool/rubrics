@@ -51,6 +51,7 @@ function rubrics_init() {
 
 	// js for forms is only needed on those pages.
 	$url = elgg_get_simplecache_url('js', 'rubrics_forms');
+	elgg_register_simplecache_view('js/rubrics_forms');	
 	elgg_register_js('rubrics:forms', $url);
 
 	// js for viewing.
