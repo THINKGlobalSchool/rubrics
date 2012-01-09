@@ -43,7 +43,6 @@ if ($title && $headers && $data) {
 		$rubric->status = 'unsaved_draft';
 		$rubric->access_id = ACCESS_PRIVATE;
 		$rubric->write_access_id = ACCESS_PRIVATE;
-		$rubric->container_guid = (int)get_input('container_guid');
 
 		// mark this as a brand new post so we can work out the
 		// river / revision logic in the real save action.
