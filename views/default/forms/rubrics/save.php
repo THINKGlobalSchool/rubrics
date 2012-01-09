@@ -135,43 +135,51 @@ $rubric_input .= "<td class=\"center top\">$link</td>";
 
 $rubric_input .= "</tr></table>";
 
+$save_status = elgg_echo('rubrics:save_status');
+if ($entity) {
+	$saved = date('F j, Y @ H:i', $entity->time_updated);
+} else {
+	$saved = elgg_echo('blog:never');
+}
+
 // Build form body
 $form_body = <<<HTML
-	<div>
-		<p class='margin_top'>
+		<div class='margin_top'>
 			<label>$title_label</label><br />
             $title_textbox
-		</p>
-		<p>
+		</div>
+		<div>
 			<label>$description_label</label><br />
             $description_textbox
-		</p>
-		<p>
+		</div>
+		<div>
 			<label>$rubric_label</label><br />
 			$rubric_input
-		</p>
-		<p>
+		</div>
+		<div>
 			<label>$tag_label</label><br />
 			$tag_input
-		</p>
-		<p>
+		</div>
+		<div>
 			<label>$access_label</label><br />
 			$access_input
-		</p>
-		<p>
+		</div>
+		<div>
 			<label>$write_access_label</label><br />
 			$write_access_input
-		</p>
-		<p>
+		</div>
+		<div>
 			<label><input type="checkbox" name="comments_on" $comments_switch />$allowcomments</label>
-		</p>
+		</div>
 
-		<p>
+		<div class="elgg-foot">
+			<div class="elgg-subtext mbm">
+			$save_status <span class="rubric-save-status-time">$saved</span>
+			</div>
 			$entity_hidden
 			$container
 			$submit_input
-		</p>
-	</div>
+		</div>
 HTML;
 
 echo $form_body;

@@ -20,7 +20,7 @@ if (elgg_instanceof($rubric, 'object', 'rubric') && $rubric->canEdit()) {
 		register_error(elgg_echo("rubrics:notdeleted"));
 	}
 } else {
-	register_error(elgg_echo('rubrics:errors:invalid_entity'));
+	register_error(elgg_echo('rubrics:errors:invalid'));
 }
 
 forward(REFERER);

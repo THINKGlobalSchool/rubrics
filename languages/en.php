@@ -46,6 +46,7 @@ $english = array(
 	'rubrics:deleted' => 'Rubric successfully deleted',
 	'rubrics:success'	=> 'Your action was successful',
 	'rubrics:posted' => 'Rubric successfully created',
+	'rubrics:saved' => 'Rubric successfully saved',
 	'rubrics:edited' => 'Rubric updated',
 	'rubrics:restored' => 'Rubric successfully restored',
 
@@ -62,6 +63,8 @@ $english = array(
 	'rubrics:cannot_delete_column' => 'You must have one column.',
 	'rubrics:cannot_delete_row' => 'You must have one row.',
 	'rubrics:cannot_load' => 'Error loading rubric matrix. Using defaults',
+	'rubrics:error:missing_data' => 'One or more required fields are missing',
+	'rubrics:error:invalid' => 'Invalid Rubric',
 
 	// Titles/Label
 	'rubrics:add' => 'Add Rubric',
@@ -73,6 +76,9 @@ $english = array(
 	'rubrics:revision_author' => 'Revision Author',
 	'rubrics:revision_created_by' => 'Revision created %s by %s',
 	'rubrics:forked_title' => "Copy of %s",
+	'rubrics:save_status' => 'Last Saved: ',
+	'rubrics:never' => 'Never',
+	'rubrics:status:unsaved_draft' => 'Unsaved Draft',
 	
 	// River terms
 	'river:create:object:rubric' => '%s published a Rubric titled %s',

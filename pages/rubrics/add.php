@@ -14,7 +14,7 @@ $title = elgg_echo('rubrics:add');
 elgg_push_breadcrumb($title);
 
 $vars = rubrics_prepare_form_vars();
-$content = elgg_view_form("rubrics/save", array(), $vars);
+$content = elgg_view_form("rubrics/save", array('name' => 'rubrics', 'class' => 'elgg-form-alt'), $vars);
 $body = elgg_view_layout('content', array(
 	'filter' => '',
 	'content' => $content,

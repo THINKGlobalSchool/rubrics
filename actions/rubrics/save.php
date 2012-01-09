@@ -47,22 +47,19 @@ $info = rubrics_get_matrix_info_from_input($headers, $data);
 // new or existing entity?
 if ($guid) {
 	$rubric = get_entity($guid);
-
 	if (!elgg_instanceof($rubric, 'object', 'rubric') || !$rubric->canEdit()) {
-		register_error(elgg_echo('rubrics:errors:invalid_entity'));
+		register_error(elgg_echo('rubrics:errors:invalid'));
 		forward(REFERER);
 	}
-
 	$success_msg = elgg_echo('rubrics:edited');
-	$river_view = 'river/object/rubrics/update';
-	$river_action = 'update';
+	$new_rubric = $rubric->new_rubric; // Check if the new rubric metadata was set (auto saved)
 } else {
 	$rubric = new Rubric();
-
 	$success_msg = elgg_echo('rubrics:posted');
-	$river_view = 'river/object/rubrics/create';
-	$river_action = 'create';
+	$new_rubric = TRUE;
 }
+
+
 
 $rubric->contents			= serialize($info['contents']);
 $rubric->title 				= $title;
@@ -74,6 +71,8 @@ $rubric->tags 				= $tagarray;
 $rubric->comments_on		= $comments_on;
 $rubric->num_cols           = $info['num_cols'];
 $rubric->num_rows           = $info['num_rows'];
+$rubric->status             = NULL; // Nullify the status on save
+$rubric->new_rubric         = FALSE;
 
 if (!$rubric->save()) {
 	register_error(elgg_echo("rubricbuilder:error"));		
@@ -83,6 +82,14 @@ if (!$rubric->save()) {
 elgg_clear_sticky_form('rubrics');
 
 system_message($success_msg);
+
+if ($new_rubric) {
+	$river_action = 'create';
+} else {
+	$river_action = 'update';
+}
+
+
 // Hacked in for now
 $river_view = 'river/object/rubrics/create';
 add_to_river($river_view, $river_action, elgg_get_logged_in_user_guid(), $rubric->getGUID());

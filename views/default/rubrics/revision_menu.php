@@ -89,7 +89,7 @@ $history_toggler = elgg_view('output/url', array(
 ));
 
 $viewing_revision = elgg_echo("rubrics:viewing_revision");
-$author_content = elgg_echo("rubrics:revision_author");
+$author_content = elgg_echo("rubrics:revision_author") . ': ' . $author_content;
 
 $history_link = elgg_view('output/url', array(
 	'text' => $count,

@@ -11,6 +11,7 @@
  */
 
 $rubric = get_entity(get_input('guid'));
+$title = elgg_echo('rubrics:edit');
 
 if (!elgg_instanceof($rubric, 'object', 'rubric')) {
 	$content = elgg_echo('rubrics:not_found');
@@ -18,7 +19,7 @@ if (!elgg_instanceof($rubric, 'object', 'rubric')) {
 	elgg_push_breadcrumb($rubric->title, $rubric->getURL());
 	elgg_push_breadcrumb(elgg_echo('edit'));
 	$vars = rubrics_prepare_form_vars($rubric);
-	$content = elgg_view_form("rubrics/save", array(), $vars);
+	$content = elgg_view_form("rubrics/save", array('name' => 'rubrics', 'class' => 'elgg-form-alt'), $vars);
 }
 
 $body = elgg_view_layout('content', array(

@@ -68,6 +68,7 @@ function rubrics_init() {
 	// menus
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'rubrics_owner_block_menu');
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'rubrics_add_fork_menu_item');
+	elgg_register_plugin_hook_handler('register', 'menu:entity', 'rubrics_add_draft_menu_item');
 	elgg_register_plugin_hook_handler('prepare', 'menu:entity', 'rubrics_remove_edit_menu_item');
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'rubrics_icon_url_override');
 	
@@ -80,6 +81,7 @@ function rubrics_init() {
 
 	$actions_root = "$plugin_root/actions/rubrics";
 	elgg_register_action('rubrics/save', "$actions_root/save.php");
+	elgg_register_action('rubrics/auto_save_revision', "$actions_root/auto_save_revision.php");
 	elgg_register_action('rubrics/delete', "$actions_root/delete.php");
 	elgg_register_action('rubrics/fork', "$actions_root/fork.php");
 	elgg_register_action('rubrics/restore', "$actions_root/restore.php");
@@ -324,8 +326,35 @@ function rubrics_add_fork_menu_item($hook, $type, $return, $options) {
 		));
 
 		$return[] = $item;
-		return $return;
 	}
+
+	return $return;
+}
+
+/**
+ * Add a menu item to display rubric status (for auto saved drafts)
+ *
+ * @param type $hook
+ * @param type $type
+ * @param ElggMenuItem $return
+ * @param type $options
+ * @return ElggMenuItem
+ */
+function rubrics_add_draft_menu_item($hook, $type, $return, $options) {
+	$entity = elgg_extract('entity', $options);
+
+	if ($entity->canEdit() && $entity->status == 'unsaved_draft') {
+		$status_text = elgg_echo("rubrics:status:unsaved_draft");
+		$options = array(
+			'name' => 'rubric_draft_status',
+			'text' => "<span>$status_text</span>",
+			'href' => false,
+			'priority' => 150,
+		);
+		$return[] = ElggMenuItem::factory($options);
+	}
+
+	return $return;
 }
 
 /**
