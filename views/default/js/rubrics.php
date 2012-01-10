@@ -49,7 +49,8 @@ elgg.rubrics.saveDraftCallback = function(data, textStatus, XHR) {
 		}
 		$(".rubric-save-status-time").html(d.toLocaleDateString() + " @ " + d.getHours() + ":" + mins);
 	} else {
-		$(".rubric-save-status-time").html(elgg.echo('error'));
+		$(".rubric-save-status-time").html(elgg.echo('rubrics:error:autosave'));
+		elgg.register_error(elgg.echo('rubrics:error:autosave'));
 	}
 }
 

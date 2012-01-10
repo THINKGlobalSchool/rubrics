@@ -16,7 +16,6 @@ $title = get_input('title');
 $description = get_input('description');
 $headers = get_input('headers', array());
 $data = get_input('data', array());
-
 $error = FALSE;
 
 if ($title && $headers && $data) {

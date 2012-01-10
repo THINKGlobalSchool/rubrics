@@ -65,6 +65,7 @@ $english = array(
 	'rubrics:cannot_load' => 'Error loading rubric matrix. Using defaults',
 	'rubrics:error:missing_data' => 'One or more required fields are missing',
 	'rubrics:error:invalid' => 'Invalid Rubric',
+	'rubrics:error:autosave' => 'WARNING: There was an error attempting to autosave this rubric. You should save the rubric as soon as possible to prevent data loss.',
 
 	// Titles/Label
 	'rubrics:add' => 'Add Rubric',
