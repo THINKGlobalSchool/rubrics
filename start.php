@@ -276,7 +276,7 @@ function rubrics_prepare_form_vars($entity = null, $revision_id = null) {
 	}
 
 	if ($revision_id) {
-		$revision = get_annotation($revision_id);
+		$revision = elgg_get_annotation_from_id($revision_id);
 
 		if ($revision) {
 			$rev_values = unserialize($revision->value);

@@ -79,7 +79,7 @@ if ($current_local_revision != $count) {
 }
 
 // Get revision author
-$revision_author = get_entity(get_annotation($flipped_revisions[$vars['current_local_revision']])->owner_guid);
+$revision_author = get_entity(elgg_get_annotation_from_id($flipped_revisions[$vars['current_local_revision']])->owner_guid);
 $author_content = "<a href='{$vars['url']}pg/rubric/{$revision_author->username}'>{$revision_author->name}</a>";
 
 $history_toggler = elgg_view('output/url', array(
