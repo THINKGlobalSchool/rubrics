@@ -323,6 +323,7 @@ function rubrics_add_fork_menu_item($hook, $type, $return, $options) {
 			'name' => 'fork',
 			'text' => $text,
 			'link_class' => 'elgg-requires-confirmation',
+			'section' => 'actions'
 		));
 
 		$return[] = $item;
@@ -350,6 +351,7 @@ function rubrics_add_draft_menu_item($hook, $type, $return, $options) {
 			'text' => "<span>$status_text</span>",
 			'href' => false,
 			'priority' => 150,
+			'section' => 'info'
 		);
 		$return[] = ElggMenuItem::factory($options);
 	}
