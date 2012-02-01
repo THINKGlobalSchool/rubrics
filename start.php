@@ -344,7 +344,7 @@ function rubrics_add_fork_menu_item($hook, $type, $return, $options) {
 function rubrics_add_draft_menu_item($hook, $type, $return, $options) {
 	$entity = elgg_extract('entity', $options);
 
-	if ($entity->canEdit() && $entity->status == 'unsaved_draft') {
+	if (elgg_instanceof($entity, 'object', 'rubric') && $entity->canEdit() && $entity->status == 'unsaved_draft') {
 		$status_text = elgg_echo("rubrics:status:unsaved_draft");
 		$options = array(
 			'name' => 'rubric_draft_status',
