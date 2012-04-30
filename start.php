@@ -115,7 +115,6 @@ function rubrics_init() {
  * @param array $page
  */
 function rubrics_page_handler($page) {
-	gatekeeper();
 	elgg_push_context('rubrics');
 	elgg_push_breadcrumb(elgg_echo('rubrics'), 'rubrics');
 
