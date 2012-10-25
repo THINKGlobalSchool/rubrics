@@ -322,7 +322,7 @@ function rubrics_add_fork_menu_item($hook, $type, $return, $options) {
 			'name' => 'fork',
 			'text' => $text,
 			'link_class' => 'elgg-requires-confirmation',
-			'section' => 'actions'
+			'section' => 'core'
 		));
 
 		$return[] = $item;
