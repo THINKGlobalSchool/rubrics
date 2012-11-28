@@ -86,7 +86,11 @@ $english = array(
 	'river:update:object:rubric' => '%s updated a Rubric titled %s',
 	'river:fork:object:rubric' => '%s copied a Rubric titled %s',
 
-	
+	// Notifications
+	'rubrics:notification:subject' => 'New Rubric',
+	'rubrics:notification:body' => "%s created a rubric titled: %s\n\n%s\n\nTo view the rubric click here:\n%s
+",
+
 	// Widget
 	'rubrics:num' => 'Number of rubrics to display',
 	'rubrics:widget:description' => 'A list of your rubrics',

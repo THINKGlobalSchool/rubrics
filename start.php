@@ -72,10 +72,6 @@ function rubrics_init() {
 	elgg_register_plugin_hook_handler('prepare', 'menu:entity', 'rubrics_remove_edit_menu_item');
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'rubrics_icon_url_override');
 	
-	// Extend options for favorites
-	// @todo not supported in current 1.8
-	//elgg_extend_view('rubric/options', 'favorites/form');
-	
 	elgg_register_page_handler('rubrics', 'rubrics_page_handler');
 	elgg_register_entity_url_handler('object', 'rubric', 'rubrics_url_handler');
 
@@ -85,6 +81,10 @@ function rubrics_init() {
 	elgg_register_action('rubrics/delete', "$actions_root/delete.php");
 	elgg_register_action('rubrics/fork', "$actions_root/fork.php");
 	elgg_register_action('rubrics/restore', "$actions_root/restore.php");
+
+	// notifications
+	register_notification_object('object', 'rubric', elgg_echo('rubrics:notification:subject'));
+	elgg_register_plugin_hook_handler('notify:entity:message', 'object', 'rubrics_notify_message');
 
 	// Groups support
 	add_group_tool_option('rubrics', elgg_echo('rubrics:enablegroup'), true);
@@ -516,4 +516,31 @@ function rubrics_remove_edit_menu_item($hook, $type, $value, $params) {
 		}
 		return $value;
 	}
+}
+
+/**
+ * Set the notification message for rubrics
+ * 
+ * @param string $hook    Hook name
+ * @param string $type    Hook type
+ * @param string $message The current message body
+ * @param array  $params  Parameters about the blog posted
+ * @return string
+ */
+function rubrics_notify_message($hook, $type, $message, $params) {
+	$entity = $params['entity'];
+	$to_entity = $params['to_entity'];
+	$method = $params['method'];
+	if (elgg_instanceof($entity, 'object', 'rubric')) {
+		$descr = $entity->description;
+		$title = $entity->title;
+		$owner = $entity->getOwnerEntity();
+		return elgg_echo('rubrics:notification:body', array(
+			$owner->name,
+			$title,
+			$descr,
+			$entity->getURL()
+		));
+	}
+	return null;
 }
