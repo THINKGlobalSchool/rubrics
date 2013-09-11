@@ -11,7 +11,6 @@
  */
 
 $title = elgg_echo('rubrics:all');
-elgg_push_breadcrumb($title);
 
 $content .= elgg_list_entities(array(
 	'type' => 'object',
