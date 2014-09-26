@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * Class defintion for a rubric
  * - Not sure if this is really necessary.. I was kind of a noob when I wrote this plugin
@@ -111,7 +111,7 @@ class Rubric extends ElggObject {
 	 * @return string The history URL
 	 */
 	public function getHistoryURL() {
-		return 'pg/rubrics/history/' . $this->getGUID()
+		return 'rubrics/history/' . $this->getGUID()
 			. '/' . elgg_get_friendly_title($this->title);
 	}
 }
