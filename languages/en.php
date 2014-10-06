@@ -53,6 +53,9 @@ $english = array(
 	// Confirmations
 	'rubrics:fork_confirm' => 'Are you sure you want to duplicate this rubric?',
 	'rubrics:restore_confirm' => 'Are you sure you want to restore this rubric?',
+
+	// Success
+	'rubrics:fork_success' => 'Successfully copied rubric!',
 	
 	// Errors
 	'rubrics:not_deleted' => 'There was an error deleting the rubric',
@@ -65,6 +68,7 @@ $english = array(
 	'rubrics:cannot_load' => 'Error loading rubric matrix. Using defaults',
 	'rubrics:error:missing_data' => 'One or more required fields are missing',
 	'rubrics:error:invalid' => 'Invalid Rubric',
+	'rubrics:cannot_fork' => 'Error forking rubric',
 	'rubrics:error:autosave' => 'WARNING: There was an error attempting to autosave this rubric. You should save the rubric as soon as possible to prevent data loss.',
 
 	// Titles/Label

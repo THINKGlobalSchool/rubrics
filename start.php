@@ -74,6 +74,8 @@ function rubrics_init() {
 
 	// Register rubrics as a group copyable subtype
 	elgg_register_plugin_hook_handler('cangroupcopy', 'entity', 'rubrics_can_group_copy_handler');
+	elgg_register_plugin_hook_handler('allowedgroupcopy', 'entity', 'rubrics_allowed_group_copy_handler');
+	elgg_register_plugin_hook_handler('groupcopyaction', 'entity', 'rubrics_group_copy_action_handler');
 	
 	elgg_register_page_handler('rubrics', 'rubrics_page_handler');
 	elgg_register_entity_url_handler('object', 'rubric', 'rubrics_url_handler');
@@ -315,7 +317,7 @@ function rubrics_prepare_form_vars($entity = null, $revision_id = null) {
  */
 function rubrics_add_fork_menu_item($hook, $type, $return, $options) {
 	$entity = elgg_extract('entity', $options);
-	if (elgg_instanceof($entity, 'object', 'rubric')) {
+	if (elgg_instanceof($entity, 'object', 'rubric') && !elgg_is_active_plugin('group-extender')) {
 		$text = elgg_echo('rubrics:fork');
 		$url = "action/rubrics/fork";
 		$url = elgg_http_add_url_query_elements($url, array('guid' => $entity->getGUID()));
@@ -549,7 +551,7 @@ function rubrics_notify_message($hook, $type, $message, $params) {
 }
 
 /**
- * Register todo as a group copyable subtype
+ * Register rubrics as a group copyable subtype
  *
  * @param string $hook
  * @param string $type
@@ -559,5 +561,38 @@ function rubrics_notify_message($hook, $type, $message, $params) {
  */
 function rubrics_can_group_copy_handler($hook, $type, $value, $params) {
 	$value[] = 'rubric';
+	return $value;
+}
+
+
+/**
+ * Register rubrics group copy action
+ *
+ * @param string $hook
+ * @param string $type
+ * @param array  $value
+ * @param array  $params
+ * @return array
+ */
+function rubrics_group_copy_action_handler($hook, $type, $value, $params) {
+	if ($params['entity']->getSubtype() == 'rubric') {
+		$value = elgg_normalize_url('action/rubrics/fork');	
+	}
+	return $value;
+}
+
+/**
+ * Register rubrics to be copied by anyone
+ *
+ * @param string $hook
+ * @param string $type
+ * @param array  $value
+ * @param array  $params
+ * @return array
+ */
+function rubrics_allowed_group_copy_handler($hook, $type, $value, $params) {
+	if ($params['entity']->getSubtype() == 'rubric') {
+		$value = elgg_is_logged_in() ? TRUE : FALSE;	
+	}
 	return $value;
 }
