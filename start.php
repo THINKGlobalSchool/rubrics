@@ -71,6 +71,9 @@ function rubrics_init() {
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'rubrics_add_draft_menu_item');
 	elgg_register_plugin_hook_handler('prepare', 'menu:entity', 'rubrics_remove_edit_menu_item');
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'rubrics_icon_url_override');
+
+	// Register rubrics as a group copyable subtype
+	elgg_register_plugin_hook_handler('cangroupcopy', 'entity', 'rubrics_can_group_copy_handler');
 	
 	elgg_register_page_handler('rubrics', 'rubrics_page_handler');
 	elgg_register_entity_url_handler('object', 'rubric', 'rubrics_url_handler');
@@ -543,4 +546,18 @@ function rubrics_notify_message($hook, $type, $message, $params) {
 		));
 	}
 	return null;
+}
+
+/**
+ * Register todo as a group copyable subtype
+ *
+ * @param string $hook
+ * @param string $type
+ * @param array  $value
+ * @param array  $params
+ * @return array
+ */
+function rubrics_can_group_copy_handler($hook, $type, $value, $params) {
+	$value[] = 'rubric';
+	return $value;
 }
