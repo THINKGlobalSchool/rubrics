@@ -10,7 +10,7 @@
  * 
  */
 
-$english = array(
+return array(
 	
 	// Entity/Object Related
 	'rubrics' => 'Rubrics',
@@ -92,6 +92,7 @@ $english = array(
 
 	// Notifications
 	'rubrics:notification:subject' => 'New Rubric',
+	'rubrics:notification:summary' => 'New Rubric: %s',
 	'rubrics:notification:body' => "%s created a rubric titled: %s\n\n%s\n\nTo view the rubric click here:\n%s
 ",
 
@@ -105,5 +106,3 @@ $english = array(
 	'rubrics:previous' => '<< Previous',
 	'rubrics:next' => 'Next >>',
 );
-
-add_translation('en', $english);

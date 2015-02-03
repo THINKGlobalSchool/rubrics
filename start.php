@@ -5,7 +5,7 @@
  * @package Rubrics
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010
+ * @copyright THINK Global School 2010 - 2015
  * @link http://www.thinkglobalschool.com/
  *
  * @todo The storage approach can be simplified by making the following changes. These would
@@ -51,7 +51,6 @@ function rubrics_init() {
 
 	// js for forms is only needed on those pages.
 	$url = elgg_get_simplecache_url('js', 'rubrics_forms');
-	elgg_register_simplecache_view('js/rubrics_forms');	
 	elgg_register_js('rubrics:forms', $url);
 
 	// js for viewing.
@@ -78,7 +77,9 @@ function rubrics_init() {
 	elgg_register_plugin_hook_handler('groupcopyaction', 'entity', 'rubrics_group_copy_action_handler');
 	
 	elgg_register_page_handler('rubrics', 'rubrics_page_handler');
-	elgg_register_entity_url_handler('object', 'rubric', 'rubrics_url_handler');
+
+	// Url handler 
+	elgg_register_plugin_hook_handler('entity:url', 'object', 'rubrics_url_handler');
 
 	$actions_root = "$plugin_root/actions/rubrics";
 	elgg_register_action('rubrics/save', "$actions_root/save.php");
@@ -88,8 +89,8 @@ function rubrics_init() {
 	elgg_register_action('rubrics/restore', "$actions_root/restore.php");
 
 	// notifications
-	register_notification_object('object', 'rubric', elgg_echo('rubrics:notification:subject'));
-	elgg_register_plugin_hook_handler('notify:entity:message', 'object', 'rubrics_notify_message');
+	elgg_register_notification_event('object', 'rubric', array('create'));
+	elgg_register_plugin_hook_handler('prepare', 'notification:publish:object:rubric', 'rubrics_prepare_notification');
 
 	// Groups support
 	add_group_tool_option('rubrics', elgg_echo('rubrics:enablegroup'), true);
@@ -203,22 +204,22 @@ function rubric_write_permission_check($hook, $entity_type, $returnvalue, $param
 }
 
 /**
- * Populates the ->getUrl() method for rubrics
+ * Returns the URL from a rubric entity
  *
- * @param ElggEntity entity
- * @return string rubric url
+ * @param string $hook   'entity:url'
+ * @param string $type   'object'
+ * @param string $url    The current URL
+ * @param array  $params Hook parameters
+ * @return string
  */
-function rubrics_url_handler($entity) {
-	$user = get_entity($entity->owner_guid);
+function rubrics_url_handler($hook, $type, $url, $params) {
+	$entity = $params['entity'];
 
-	// BP: this should never happen...?
-	if (!$user) {
-		// default to a standard view if no owner.
-		return FALSE;
+	// Check that the entity is a rubric object
+	if (!elgg_instanceof($entity, 'object', 'rubric')) {
+		return;
 	}
 
-	$title = elgg_get_friendly_title($entity->title);
-	
 	return "rubrics/view/{$entity->guid}/$title";
 }
 
@@ -524,30 +525,36 @@ function rubrics_remove_edit_menu_item($hook, $type, $value, $params) {
 }
 
 /**
- * Set the notification message for rubrics
- * 
- * @param string $hook    Hook name
- * @param string $type    Hook type
- * @param string $message The current message body
- * @param array  $params  Parameters about the blog posted
- * @return string
+ * Prepare a notification message about a new rubric
+ *
+ * @param string                          $hook         Hook name
+ * @param string                          $type         Hook type
+ * @param Elgg_Notifications_Notification $notification The notification to prepare
+ * @param array                           $params       Hook parameters
+ * @return Elgg_Notifications_Notification
  */
-function rubrics_notify_message($hook, $type, $message, $params) {
-	$entity = $params['entity'];
-	$to_entity = $params['to_entity'];
+function rubrics_prepare_notification($hook, $type, $notification, $params) {
+	$entity = $params['event']->getObject();
+	$owner = $params['event']->getActor();
+	$recipient = $params['recipient'];
+	$language = $params['language'];
 	$method = $params['method'];
-	if (elgg_instanceof($entity, 'object', 'rubric')) {
-		$descr = $entity->description;
-		$title = $entity->title;
-		$owner = $entity->getOwnerEntity();
-		return elgg_echo('rubrics:notification:body', array(
-			$owner->name,
-			$title,
-			$descr,
-			$entity->getURL()
-		));
-	}
-	return null;
+
+	// Title for the notification
+	$notification->subject = elgg_echo('rubrics:notification:subject');
+
+    // Message body for the notification
+	$notification->body = elgg_echo('rubrics:notification:body', array(
+		$owner->name,
+		$entity->title,
+		$entity->description,
+		$entity->getURL()
+	), $language);
+
+    // The summary text is used e.g. by the site_notifications plugin
+    $notification->summary = elgg_echo('rubrics:notification:summary', array($entity->title), $language);
+
+    return $notification;
 }
 
 /**
