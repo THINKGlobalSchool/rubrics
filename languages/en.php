@@ -22,6 +22,7 @@ return array(
 	'rubrics:friends' => 'Friends\' Rubrics',
 	'rubrics:enablegroup' => 'Enable group rubrics',
 	'river:comment:object:rubric' => '%s commented on the rubric %s',
+	'rubric:never' => 'Never',
 	
 	// Default Content
 	'rubrics:criteria:default' => 'Criteria',

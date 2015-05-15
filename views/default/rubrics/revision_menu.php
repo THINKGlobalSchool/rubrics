@@ -5,8 +5,8 @@
  * @package RubricBuilder
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010
- * @link http://www.thinkglobalschool.com/
+ * @copyright THINK Global School 2010 - 2015
+ * @link http://www.thinkglobalschool.org/
  *
  * @uses $vars['revision'] - Current Revision or null
  * @uses $vars['rubric_guid'] - Rubric guid
@@ -71,7 +71,7 @@ if ($current_local_revision != $count) {
 		'rev_id' => $revision->id
 	));
 	
-	$restore_link = elgg_view("output/confirmlink", array(
+	$restore_link = elgg_view("output/url", array(
 		'href' => $url,
 		'text' => elgg_echo('rubrics:restore'),
 		'confirm' => elgg_echo('rubrics:restore_confirm'),
@@ -80,7 +80,8 @@ if ($current_local_revision != $count) {
 
 // Get revision author
 $revision_author = get_entity(elgg_get_annotation_from_id($flipped_revisions[$vars['current_local_revision']])->owner_guid);
-$author_content = "<a href='{$vars['url']}pg/rubric/{$revision_author->username}'>{$revision_author->name}</a>";
+$site_url = elgg_get_site_url();
+$author_content = "<a href='{$site_url}rubrics/owner/{$revision_author->username}'>{$revision_author->name}</a>";
 
 $history_toggler = elgg_view('output/url', array(
 	'text' => elgg_echo("rubrics:revision_history"),

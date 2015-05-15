@@ -48,7 +48,10 @@ $date = elgg_view_friendly_time($rubric->time_created);
 // Build an array of 'local' revisions
 // ie: map the annotation id to a local number
 // annotations 87, 88, 89, 92, 98 becomes 1, 2, 3, 4, 5
-$revisions = $rubric->getAnnotations('rubric', 0);
+$revisions = $rubric->getAnnotations(array(
+	'annotation_name' => 'rubric',
+	'limit' => 0
+));
 
 $count = count($revisions);
 $local_revisions = array();

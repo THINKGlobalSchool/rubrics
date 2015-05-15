@@ -17,8 +17,8 @@
  * @package RubricBuilder
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010
- * @link http://www.thinkglobalschool.com/
+ * @copyright THINK Global School 2010 - 2015
+ * @link http://www.thinkglobalschool.org/
  * 
  */
 
@@ -30,7 +30,6 @@ $tags			= get_input('tags');
 $container_guid = (int)get_input('container_guid');
 $access_id		= (int)get_input('access_id', ACCESS_PRIVATE);
 $write_access	= (int)get_input('write_access_id', ACCESS_PRIVATE);
-$comments_on	= get_input('comments_on', 'Off');
 $headers        = get_input('headers', array());
 $data           = get_input('data', array());
 $tagarray 		= string_to_tag_array($tags);
@@ -59,8 +58,6 @@ if ($guid) {
 	$new_rubric = TRUE;
 }
 
-
-
 $rubric->contents			= serialize($info['contents']);
 $rubric->title 				= $title;
 $rubric->description 		= $description;
@@ -68,7 +65,6 @@ $rubric->container_guid 	= $container_guid;
 $rubric->access_id			= $access_id;
 $rubric->write_access_id	= $write_access;
 $rubric->tags 				= $tagarray;
-$rubric->comments_on		= $comments_on;
 $rubric->num_cols           = $info['num_cols'];
 $rubric->num_rows           = $info['num_rows'];
 $rubric->status             = NULL; // Nullify the status on save
@@ -89,10 +85,12 @@ if ($new_rubric) {
 	$river_action = 'update';
 }
 
-
-// Hacked in for now
-$river_view = 'river/object/rubrics/create';
-add_to_river($river_view, $river_action, elgg_get_logged_in_user_guid(), $rubric->getGUID());
+elgg_create_river_item(array(
+	'view' => 'river/object/rubrics/create',
+	'action_type' => $river_action,
+	'subject_guid' => elgg_get_logged_in_user_guid(),
+	'object_guid' => $rubric->guid
+));
 
 $revision = array(
 	"contents" => $rubric->contents,

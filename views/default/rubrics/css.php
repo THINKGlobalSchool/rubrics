@@ -212,7 +212,7 @@ table.rubric-table {
 	width: 20px;
 	height: 20px;
 	background-color: #000000;
-	background-image: url("<?php echo $vars['url'] . "mod/rubricbuilder/images/minus.gif"; ?>");
+	background-image: url("<?php echo elgg_normalize_url("mod/rubricbuilder/images/minus.gif"); ?>");
 }
 
 .remove-button:hover {
@@ -222,7 +222,7 @@ table.rubric-table {
 	width: 20px;
 	height: 20px;
 	background-color: #000000;
-	background-image: url("<?php echo $vars['url'] . "mod/rubricbuilder/images/minus.gif"; ?>");
+	background-image: url("<?php echo elgg_normalize_url("mod/rubricbuilder/images/minus.gif"); ?>");
 }
 
 div#rubric-revision-menu {
@@ -263,12 +263,12 @@ table#rubric-revision-menu-table td.rubric-revision-next {
 /* For the river! (Not sure if this still works) */
 
 .river_object_rubric_create {
-	background: url(<?php echo $vars['url']; ?>mod/rubricbuilder/images/rubric_river.gif) no-repeat left -1px;
+	background: url(<?php elgg_get_site_url(); ?>mod/rubricbuilder/images/rubric_river.gif) no-repeat left -1px;
 }
 .river_object_rubric_comment {
-	background: url(<?php echo $vars['url']; ?>mod/rubricbuilder/images/rubric_river.gif) no-repeat left -1px;
+	background: url(<?php elgg_get_site_url(); ?>mod/rubricbuilder/images/rubric_river.gif) no-repeat left -1px;
 }
 .river_object_rubric_update {
-	background: url(<?php echo $vars['url']; ?>mod/rubricbuilder/images/rubric_river.gif) no-repeat left -1px;
+	background: url(<?php elgg_get_site_url(); ?>mod/rubricbuilder/images/rubric_river.gif) no-repeat left -1px;
 }
 

@@ -1,2 +1,2 @@
 <?php
-echo $vars['url'] . "mod/rubricbuilder/images/rubric.gif";
+echo  elgg_normalize_url("mod/rubricbuilder/images/rubric.gif");

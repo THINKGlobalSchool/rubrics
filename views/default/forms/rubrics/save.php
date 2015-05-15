@@ -5,8 +5,8 @@
  * @package Rubrics
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010
- * @link http://www.thinkglobalschool.com/
+ * @copyright THINK Global School 2010 - 2015
+ * @link http://www.thinkglobalschool.org/
  * 
  */
 
@@ -19,7 +19,7 @@ $tags = elgg_extract('tags', $vars, '');
 $access_id = elgg_extract('access_id', $vars, ACCESS_DEFAULT);
 $container_guid = elgg_extract('container_guid', $vars, null);
 $guid = elgg_extract('guid', $vars, null);
-$comments_on = elgg_extract('comments_on', $vars, 'Yes');
+$write_access_id = elgg_extract('write_access_id', $vars, ACCESS_PRIVATE);
 
 // sticky forms
 $headers = elgg_extract('headers', $vars);
@@ -57,12 +57,6 @@ $tag_input 				= elgg_view('input/tags', array('name' => 'tags', 'value' => $tag
 $write_access_label		= elgg_echo('Write Access');
 $access_label 			= elgg_echo('access');
 
-if ($comments_on != 'No') {
-  	$comments_switch = "checked=\"checked\"";
-} else {
-	$comment_switch = "";
-}
-	
 $write_access_input	= elgg_view('input/access', array('name' => 'write_access_id', 'value' => $write_access_id));
 $access_input 		= elgg_view('input/access', array('name' => 'access_id', 'value' => $access_id));
 $submit_input 		= elgg_view('input/submit', array('name' => 'submit', 'value' => elgg_echo('publish')));
@@ -139,7 +133,7 @@ $save_status = elgg_echo('rubrics:save_status');
 if ($entity) {
 	$saved = date('F j, Y @ H:i', $entity->time_updated);
 } else {
-	$saved = elgg_echo('blog:never');
+	$saved = elgg_echo('rubric:never');
 }
 
 // Build form body
@@ -168,10 +162,6 @@ $form_body = <<<HTML
 			<label>$write_access_label</label><br />
 			$write_access_input
 		</div>
-		<div>
-			<label><input type="checkbox" name="comments_on" $comments_switch />$allowcomments</label>
-		</div>
-
 		<div class="elgg-foot">
 			<div class="elgg-subtext mbm">
 			$save_status <span class="rubric-save-status-time">$saved</span>
