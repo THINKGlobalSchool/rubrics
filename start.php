@@ -90,7 +90,7 @@ function rubrics_init() {
 
 	// notifications
 	elgg_register_notification_event('object', 'rubric', array('create'));
-	elgg_register_plugin_hook_handler('prepare', 'notification:publish:object:rubric', 'rubrics_prepare_notification');
+	elgg_register_plugin_hook_handler('prepare', 'notification:create:object:rubric', 'rubrics_prepare_notification');
 
 	// Groups support
 	add_group_tool_option('rubrics', elgg_echo('rubrics:enablegroup'), true);
